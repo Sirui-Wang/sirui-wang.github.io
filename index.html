@@ -10,11 +10,10 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: Arial, sans-serif;
             height: 100vh;
-            overflow: hidden; /* If we want to prevent scrolling */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,7 +21,6 @@
             position: relative;
         }
 
-        /* We'll apply transitions with these classes. */
         .enable-transitions .welcome,
         .enable-transitions .content-section,
         .enable-transitions .floating-menu a {
@@ -50,7 +48,7 @@
             position: relative;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* So content can slide out of view if needed */
+            overflow: hidden;
         }
 
         /* Content Sections (Profile, CV, Projects, etc.) */
@@ -81,15 +79,14 @@
             position: absolute;
             left: 20px;
             width: 150px;
-            /* Place the floating menu above all content */
-            z-index: 9999;
+            z-index: 9999; /* Keep menu above the content */
         }
         .floating-menu a {
-            position: absolute; /* We'll move them in JS */
+            position: absolute;
             left: 0;
             width: 150px;
             height: 50px;
-            background: #333;
+            background: #1a5371; /* a dark bluish color */
             color: white;
             display: flex;
             justify-content: center;
@@ -99,10 +96,11 @@
             font-size: 1rem;
             opacity: 0; /* Hidden until welcome is gone */
             cursor: pointer;
+            transform-origin: center; /* So scale shrinks/expands from center */
         }
         .floating-menu a:hover {
-            background: #555;
-            transform: scale(1.05);
+            background: #2a799f;
+            transform: scale(1.05); /* slightly bigger on hover */
         }
     </style>
 </head>
@@ -164,7 +162,7 @@
             (btn) => document.getElementById('content-' + btn.dataset.index)
         );
 
-        // We want the first section (index 0) active.
+        // We want the first section (index 0) active
         let activeIndex = 0;
         contentSecs.forEach((sec, i) => {
             if (i === activeIndex) {
@@ -176,12 +174,12 @@
             }
         });
 
-        // All menu items start invisible; fade in after welcome.
+        // All menu items start invisible
         menuItems.forEach((btn) => {
             btn.style.opacity = '0';
         });
 
-        // Immediately place them for initial load (no transitions).
+        // Place them for the initial load (no transitions yet)
         placeButtons(activeIndex, false);
 
         // === WELCOME SCREEN ANIMATION ===
@@ -217,42 +215,69 @@
                 contentSecs[i].style.transform = 'translateY(0)';
                 contentSecs[i].style.opacity   = '1';
 
-                // Re-position buttons so new one is centered
+                // Re-position the buttons so new one is centered
                 activeIndex = i;
                 placeButtons(activeIndex, true);
             });
         });
 
-        // === placeButtons ===
-        // Active in center, smaller indices above, bigger indices below
+        /*
+          placeButtons:
+          1) Active button => scale 1, centered.
+          2) Adjacent above/below => bigger spacing from active.
+          3) Non-adjacent unselected => smaller spacing from each other.
+          4) All unselected => scale 0.7
+        */
         function placeButtons(activeIdx, animate) {
             const centerY = window.innerHeight / 2;
-            const halfHeight = 25; // each ~50px
-            const spacing = 60;    // spacing between buttons
+            const halfActive = 25;   // active button is ~50px tall => half is 25
+            const scaleActive = 1.0;
+            const scaleInactive = 0.7;
 
-            // Turn off transitions if we don't want to animate now
+            // We'll define two different spacing steps:
+            const spacingFromActive = 80; // bigger gap next to the active
+            const spacingUnselected = 50; // smaller gap between unselecteds
+
+            // If we don't want to animate now, disable transitions
             if (!animate) {
                 menuItems.forEach(btn => {
                     btn.style.transition = 'none';
                 });
             }
 
-            // (1) Active button at center
-            const activeY = centerY - halfHeight;
-            menuItems[activeIdx].style.transform = `translateY(${activeY}px)`;
+            // Place the active button
+            const activeY = centerY - halfActive;
+            menuItems[activeIdx].style.transform =
+                `translateY(${activeY}px) scale(${scaleActive})`;
 
-            // (2) Items below the active
+            // ========== PLACE BUTTONS BELOW ==========
             let belowPos = activeY;
             for (let j = activeIdx + 1; j < menuItems.length; j++) {
-                belowPos += spacing;
-                menuItems[j].style.transform = `translateY(${belowPos}px)`;
+                // The first button below the active gets bigger spacing,
+                // subsequent unselected pairs get the smaller spacing.
+                const dist = (j === activeIdx + 1)
+                    ? spacingFromActive
+                    : spacingUnselected;
+
+                belowPos += dist;
+
+                menuItems[j].style.transform =
+                    `translateY(${belowPos}px) scale(${scaleInactive})`;
             }
 
-            // (3) Items above the active
+            // ========== PLACE BUTTONS ABOVE ==========
             let abovePos = activeY;
             for (let j = activeIdx - 1; j >= 0; j--) {
-                abovePos -= spacing;
-                menuItems[j].style.transform = `translateY(${abovePos}px)`;
+                // The first button above the active also uses bigger spacing,
+                // subsequent unselected pairs get smaller spacing.
+                const dist = (j === activeIdx - 1)
+                    ? spacingFromActive
+                    : spacingUnselected;
+
+                abovePos -= dist;
+
+                menuItems[j].style.transform =
+                    `translateY(${abovePos}px) scale(${scaleInactive})`;
             }
 
             // Re-enable transitions if we turned them off
@@ -269,7 +294,6 @@
         window.addEventListener('resize', () => {
             placeButtons(activeIndex, false);
         });
-
     });
 </script>
 
