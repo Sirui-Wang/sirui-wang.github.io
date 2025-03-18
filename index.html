@@ -156,9 +156,11 @@
 <!-- Welcome Screen -->
 <div class="welcome" id="welcome-screen">
     <div>
-        <p>披荆斩棘，直抵星辰<br>请向上划</p>
+        <!-- Chinese text at top half (click => down) -->
+        <p>披荆斩棘，直抵星辰<br>点此 或 请向下划</p>
         <div>Per aspera ad astra</div>
-        <p>Through asperities to the stars<br>swipe up</p>
+        <!-- English text at bottom half (click => up) -->
+        <p>Through asperities to the stars<br>Click here, or swipe up</p>
     </div>
 </div>
 
@@ -266,26 +268,25 @@
         // Also allow quick testing on desktop by clicking top/bottom:
         welcome.addEventListener('click', (e) => {
             const rect = welcome.getBoundingClientRect();
-            const mid  = rect.top + rect.height/2;
+            const mid  = rect.top + rect.height / 2;
+            // Now top half => 'down' => Chinese
+            // bottom half => 'up' => English
             if (e.clientY < mid) {
-                // user clicked top => up => english
-                handleSwipe('up');
-            } else {
-                // user clicked bottom => down => chinese
                 handleSwipe('down');
+            } else {
+                handleSwipe('up');
             }
         });
 
-        function handleSwipe(forcedDir=null) {
+        function handleSwipe(forcedDir = null) {
             const deltaY = touchEndY - touchStartY;
             let direction = forcedDir;
             if (!direction) {
                 direction = (deltaY < 0) ? 'up' : 'down';
             }
 
-            // For your request:
-            // Swipe UP => English, welcome slides up, app-en slides up from below
-            // Swipe DOWN => Chinese, welcome slides down, app-zh slides down from above
+            // Swipe Up => English
+            // Swipe Down => Chinese
             if (direction === 'up') {
                 showSystem('en');
             } else {
@@ -303,7 +304,7 @@
                 welcome.style.opacity   = '0';
 
                 // Show the EN container, which starts at translateY(100%)
-                appEn.style.display     = 'block';
+                appEn.style.display = 'block';
                 setTimeout(() => {
                     appEn.style.opacity   = '1';
                     appEn.style.transform = 'translateY(0)';
@@ -315,11 +316,10 @@
                 welcome.style.transform = 'translateY(100%)';
                 welcome.style.opacity   = '0';
 
-                // Show the ZH container, which we'll treat as if it's above the screen ( translateY(-100%) ).
-                // So let's set it to -100% first:
-                appZh.style.display     = 'block';
-                appZh.style.transform   = 'translateY(-100%)';
-                // Then animate it down to 0
+                // Show the ZH container
+                appZh.style.display = 'block';
+                // We treat it as if it's above the screen (translateY(-100%)).
+                appZh.style.transform = 'translateY(-100%)';
                 requestAnimationFrame(() => {
                     setTimeout(() => {
                         appZh.style.opacity   = '1';
@@ -334,7 +334,7 @@
         // ============== Desktop Logic for English ==============
         function initEnglish() {
             if (window.innerWidth <= 768) return;
-            // On mobile, do nothing special. Scroll-snap is already in effect.
+            // On mobile, we rely on scroll-snap.
 
             const floatingEn  = document.getElementById('floating-menu-en');
             const menuItemsEn = Array.from(floatingEn.querySelectorAll('a'));
@@ -357,7 +357,7 @@
             menuItemsEn.forEach(btn => btn.style.opacity = '0');
             placeButtons(menuItemsEn, activeIndex, false);
 
-            // Stagger fade in after we reveal the container
+            // Stagger fade in
             setTimeout(() => {
                 menuItemsEn.forEach((btn, idx) => {
                     setTimeout(() => {
@@ -382,7 +382,7 @@
                 });
             });
 
-            // Re-center on window resize if still desktop
+            // Re-center on window resize
             window.addEventListener('resize', () => {
                 if (window.innerWidth > 768) {
                     placeButtons(menuItemsEn, activeIndex, false);
