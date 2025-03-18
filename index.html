@@ -12,8 +12,8 @@
         }
         body {
             font-family: Arial, sans-serif;
-            height: 100vh; /* used on desktop, overridden on mobile */
-            overflow: hidden; /* on desktop. We'll allow scroll on mobile via media query. */
+            height: 100vh;
+            overflow: hidden; /* On desktop. On mobile we override via media query. */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,6 +22,7 @@
         }
 
         .enable-transitions .welcome,
+        .enable-transitions .app-container,
         .enable-transitions .content-section,
         .enable-transitions .floating-menu a {
             transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
@@ -41,14 +42,29 @@
             transform: translateY(0);
             opacity: 1; /* Start fully visible */
             z-index: 10; /* Above everything initially */
+            text-align: center;
+            user-select: none; /* so swipes don't select text */
+        }
+        .welcome p {
+            font-size: 1rem;
+            margin-top: 1rem;
+            color: #666;
         }
 
-        /* Container for content & menu */
+        /*
+          We now treat each app container (English / Chinese)
+          as absolutely positioned offscreen. We'll animate them in.
+        */
         .app-container {
-            position: relative;
+            position: absolute;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* For desktop, we animate slides with JS. */
+            overflow: hidden; /* Desktop sliding logic */
+            display: none;    /* hidden until user swipes */
+            transform: translateY(100%);
+            opacity: 0;
+            z-index: 9;       /* behind the welcome screen (z=10) initially */
         }
 
         /* Content Sections (Profile, CV, Projects, etc.) */
@@ -82,11 +98,11 @@
             z-index: 9999; /* Keep menu above the content on desktop */
         }
         .floating-menu a {
-            position: absolute; /* We'll move them in JS */
+            position: absolute;
             left: 0;
             width: 150px;
             height: 50px;
-            background: #1a5371; /* a dark bluish color */
+            background: #1a5371;
             color: white;
             display: flex;
             justify-content: center;
@@ -94,21 +110,21 @@
             border-radius: 25px;
             text-decoration: none;
             font-size: 1rem;
-            opacity: 0; /* Hidden until welcome is gone */
+            opacity: 0; /* Hidden until reveal */
             cursor: pointer;
             transform-origin: center;
         }
         .floating-menu a:hover {
             background: #2a799f;
-            transform: scale(1.05); /* slightly bigger on hover */
+            transform: scale(1.05);
         }
 
-        /* Mobile Mode (max-width: 768px): scroll-snap layout */
+        /* Mobile Mode (max-width: 768px): scroll-snap layout. */
         @media (max-width: 768px) {
             body {
-                overflow: hidden; /* We'll let .app-container do the scrolling */
+                overflow: hidden;
                 height: 100vh;
-                display: block;   /* remove the center alignment for stacked sections */
+                display: block;
             }
             .app-container {
                 position: static;
@@ -117,20 +133,20 @@
                 overflow-y: scroll; /* vertical scrolling container */
                 scroll-snap-type: y mandatory;
                 scroll-snap-stop: always;
+                display: none;  /* shown after swipe, same as desktop approach */
+                transform: none !important;
+                opacity: 1 !important;
             }
             .floating-menu {
                 display: none !important; /* hide menu on mobile */
             }
             .content-section {
-                position: static !important; /* stack vertically */
+                position: static !important;
                 width: 100%;
                 min-height: 100vh;
                 transform: none !important;
                 opacity: 1 !important;
                 scroll-snap-align: start;
-            }
-            .content-section:not(:last-child) {
-                margin-bottom: 0; /* optional spacing between sections */
             }
         }
     </style>
@@ -138,13 +154,17 @@
 <body>
 
 <!-- Welcome Screen -->
-<div class="welcome">Hello, World!</div>
+<div class="welcome" id="welcome-screen">
+    <div>
+        <div>Hello, World!</div>
+        <p>Swipe Up for English<br>Swipe Down for Chinese</p>
+    </div>
+</div>
 
-<!-- Container for menu + content sections -->
-<div class="app-container">
-
-    <!-- Floating Menu -->
-    <div class="floating-menu">
+<!-- English Container -->
+<div class="app-container" id="app-en">
+    <!-- Floating Menu (English) -->
+    <div class="floating-menu" id="floating-menu-en">
         <a data-index="0">Profile</a>
         <a data-index="1">Curriculum Vitae</a>
         <a data-index="2">Projects</a>
@@ -152,8 +172,8 @@
         <a data-index="4">Contact</a>
     </div>
 
-    <!-- Content Sections -->
-    <div class="content-section profile-content" id="content-0">
+    <!-- English Content Sections -->
+    <div class="content-section profile-content" id="content-en-0">
         <div>
             <img src="placeholder.jpg" alt="Profile Picture" style="width: 150px; border-radius:50%;" />
             <h1>Your Name</h1>
@@ -161,57 +181,169 @@
         </div>
     </div>
 
-    <div class="content-section" id="content-1" style="background:#f1f7ff;">
+    <div class="content-section" id="content-en-1" style="background:#f1f7ff;">
         <h1>Curriculum Vitae</h1>
         <p>Display your CV info here...</p>
     </div>
 
-    <div class="content-section" id="content-2" style="background:#fffbea;">
+    <div class="content-section" id="content-en-2" style="background:#fffbea;">
         <h1>Projects</h1>
         <p>Show your projects here.</p>
     </div>
 
-    <div class="content-section" id="content-3" style="background:#ffeef0;">
+    <div class="content-section" id="content-en-3" style="background:#ffeef0;">
         <h1>Publications</h1>
         <p>Show your publications here.</p>
     </div>
 
-    <div class="content-section" id="content-4" style="background:#f0ffee;">
+    <div class="content-section" id="content-en-4" style="background:#f0ffee;">
         <h1>Contact</h1>
         <p>Contact info here...</p>
     </div>
+</div><!-- end #app-en -->
 
-</div> <!-- end .app-container -->
+<!-- Chinese Container -->
+<div class="app-container" id="app-zh">
+    <!-- Floating Menu (Chinese) -->
+    <div class="floating-menu" id="floating-menu-zh">
+        <a data-index="0">个人资料</a>
+        <a data-index="1">简历</a>
+        <a data-index="2">项目</a>
+        <a data-index="3">出版物</a>
+        <a data-index="4">联系</a>
+    </div>
+
+    <!-- Chinese Content Sections -->
+    <div class="content-section profile-content" id="content-zh-0">
+        <div>
+            <img src="placeholder.jpg" alt="Profile Picture" style="width: 150px; border-radius:50%;" />
+            <h1>您的名字</h1>
+            <p>土木工程博士 | 声学传感研究员</p>
+        </div>
+    </div>
+
+    <div class="content-section" id="content-zh-1" style="background:#e7f1ff;">
+        <h1>简历</h1>
+        <p>在这里展示您的简历信息…</p>
+    </div>
+
+    <div class="content-section" id="content-zh-2" style="background:#fffdea;">
+        <h1>项目</h1>
+        <p>在这里展示您的项目…</p>
+    </div>
+
+    <div class="content-section" id="content-zh-3" style="background:#ffe0e5;">
+        <h1>出版物</h1>
+        <p>在这里展示您的出版物…</p>
+    </div>
+
+    <div class="content-section" id="content-zh-4" style="background:#eafff0;">
+        <h1>联系</h1>
+        <p>在这里展示您的联系方式…</p>
+    </div>
+</div><!-- end #app-zh -->
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const body         = document.body;
-        const welcome      = document.querySelector('.welcome');
-        const floatingMenu = document.querySelector('.floating-menu');
-        const menuItems    = Array.from(floatingMenu.querySelectorAll('a'));
-        const contentSecs  = menuItems.map(
-            (btn) => document.getElementById('content-' + btn.dataset.index)
-        );
+        const body      = document.body;
+        const welcome   = document.getElementById('welcome-screen');
+        const appEn     = document.getElementById('app-en');
+        const appZh     = document.getElementById('app-zh');
 
-        //
-        // 1) Always fade out the welcome screen (desktop or mobile)
-        //
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                body.classList.add('enable-transitions');
-                welcome.style.transform = 'translateY(-100%)';
-                welcome.style.opacity   = '0';
-            }, 1000); // 1 second
+        let touchStartY = 0;
+        let touchEndY   = 0;
+
+        // Capture swipe on welcome screen
+        welcome.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].clientY;
+        });
+        welcome.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].clientY;
+            handleSwipe();
         });
 
-        //
-        // 2) If we’re on desktop, run the floating menu logic
-        //
-        if (window.innerWidth > 768) {
-            // We want the first section (index 0) active
+        // Also allow quick testing on desktop by clicking top/bottom:
+        welcome.addEventListener('click', (e) => {
+            const rect = welcome.getBoundingClientRect();
+            const mid  = rect.top + rect.height/2;
+            if (e.clientY < mid) {
+                // user clicked top => up => english
+                handleSwipe('up');
+            } else {
+                // user clicked bottom => down => chinese
+                handleSwipe('down');
+            }
+        });
+
+        function handleSwipe(forcedDir=null) {
+            const deltaY = touchEndY - touchStartY;
+            let direction = forcedDir;
+            if (!direction) {
+                direction = (deltaY < 0) ? 'up' : 'down';
+            }
+
+            // For your request:
+            // Swipe UP => English, welcome slides up, app-en slides up from below
+            // Swipe DOWN => Chinese, welcome slides down, app-zh slides down from above
+            if (direction === 'up') {
+                showSystem('en');
+            } else {
+                showSystem('zh');
+            }
+        }
+
+        function showSystem(lang) {
+            // Enable transitions
+            body.classList.add('enable-transitions');
+
+            if (lang === 'en') {
+                // Move welcome screen up
+                welcome.style.transform = 'translateY(-100%)';
+                welcome.style.opacity   = '0';
+
+                // Show the EN container, which starts at translateY(100%)
+                appEn.style.display     = 'block';
+                setTimeout(() => {
+                    appEn.style.opacity   = '1';
+                    appEn.style.transform = 'translateY(0)';
+                }, 50);
+
+                initEnglish();
+            } else {
+                // Move welcome screen down
+                welcome.style.transform = 'translateY(100%)';
+                welcome.style.opacity   = '0';
+
+                // Show the ZH container, which we'll treat as if it's above the screen ( translateY(-100%) ).
+                // So let's set it to -100% first:
+                appZh.style.display     = 'block';
+                appZh.style.transform   = 'translateY(-100%)';
+                // Then animate it down to 0
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        appZh.style.opacity   = '1';
+                        appZh.style.transform = 'translateY(0)';
+                    }, 50);
+                });
+
+                initChinese();
+            }
+        }
+
+        // ============== Desktop Logic for English ==============
+        function initEnglish() {
+            if (window.innerWidth <= 768) return;
+            // On mobile, do nothing special. Scroll-snap is already in effect.
+
+            const floatingEn  = document.getElementById('floating-menu-en');
+            const menuItemsEn = Array.from(floatingEn.querySelectorAll('a'));
+            const sectionsEn  = menuItemsEn.map(
+                btn => document.getElementById('content-en-' + btn.dataset.index)
+            );
+
             let activeIndex = 0;
-            contentSecs.forEach((sec, i) => {
-                if (i === activeIndex) {
+            sectionsEn.forEach((sec, i) => {
+                if (i === 0) {
                     sec.style.transform = 'translateY(0)';
                     sec.style.opacity   = '1';
                 } else {
@@ -220,110 +352,147 @@
                 }
             });
 
-            // All menu items start invisible
-            menuItems.forEach((btn) => {
-                btn.style.opacity = '0';
-            });
+            // Menus start invisible
+            menuItemsEn.forEach(btn => btn.style.opacity = '0');
+            placeButtons(menuItemsEn, activeIndex, false);
 
-            // Place them initially (no transitions)
-            placeButtons(activeIndex, false);
-
-            // Fade in the floating-menu buttons, staggered
-            // after the welcome is hidden (approx after 1s).
-            // We can add a slight offset to ensure the fade out is done.
+            // Stagger fade in after we reveal the container
             setTimeout(() => {
-                menuItems.forEach((btn, index) => {
+                menuItemsEn.forEach((btn, idx) => {
                     setTimeout(() => {
                         btn.style.opacity = '1';
-                    }, index * 200);
+                    }, idx * 200);
                 });
-            }, 1200); // start ~200ms after welcome starts fading
+            }, 600);
 
-            // CLICK HANDLERS
-            menuItems.forEach((btn, i) => {
+            // Click handlers
+            menuItemsEn.forEach((btn, i) => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (i === activeIndex) return; // no change
+                    if (i === activeIndex) return;
 
-                    // Slide out old content
-                    contentSecs[activeIndex].style.transform = 'translateY(100%)';
-                    contentSecs[activeIndex].style.opacity   = '0';
+                    sectionsEn[activeIndex].style.transform = 'translateY(100%)';
+                    sectionsEn[activeIndex].style.opacity   = '0';
+                    sectionsEn[i].style.transform = 'translateY(0)';
+                    sectionsEn[i].style.opacity   = '1';
 
-                    // Slide in new content
-                    contentSecs[i].style.transform = 'translateY(0)';
-                    contentSecs[i].style.opacity   = '1';
-
-                    // Re-position the buttons so new one is centered
                     activeIndex = i;
-                    placeButtons(activeIndex, true);
+                    placeButtons(menuItemsEn, activeIndex, true);
                 });
             });
 
-            /*
-              placeButtons:
-              1) Active => scale(1.0).
-              2) Unselected => scale(0.7).
-              3) Large gap around active => 80
-              4) Smaller gap between unselected => 50
-            */
-            function placeButtons(activeIdx, animate) {
-                const centerY = window.innerHeight / 2;
-                const halfActive = 25;   // half of 50
-                const scaleActive = 1.0;
-                const scaleInactive = 0.7;
-
-                const spacingFromActive = 80; // bigger gap next to active
-                const spacingUnselected = 50; // smaller gap between unselected
-
-                if (!animate) {
-                    menuItems.forEach(btn => {
-                        btn.style.transition = 'none';
-                    });
-                }
-
-                // Place active in center
-                const activeY = centerY - halfActive;
-                menuItems[activeIdx].style.transform =
-                    `translateY(${activeY}px) scale(${scaleActive})`;
-
-                // Below the active
-                let belowPos = activeY;
-                for (let j = activeIdx + 1; j < menuItems.length; j++) {
-                    const dist = (j === activeIdx + 1)
-                        ? spacingFromActive
-                        : spacingUnselected;
-                    belowPos += dist;
-                    menuItems[j].style.transform =
-                        `translateY(${belowPos}px) scale(${scaleInactive})`;
-                }
-
-                // Above the active
-                let abovePos = activeY;
-                for (let j = activeIdx - 1; j >= 0; j--) {
-                    const dist = (j === activeIdx - 1)
-                        ? spacingFromActive
-                        : spacingUnselected;
-                    abovePos -= dist;
-                    menuItems[j].style.transform =
-                        `translateY(${abovePos}px) scale(${scaleInactive})`;
-                }
-
-                if (!animate) {
-                    requestAnimationFrame(() => {
-                        menuItems.forEach(btn => {
-                            btn.style.transition = '';
-                        });
-                    });
-                }
-            }
-
-            // Re-center on window resize
+            // Re-center on window resize if still desktop
             window.addEventListener('resize', () => {
-                // If user resizes bigger than 768 => re-layout
                 if (window.innerWidth > 768) {
-                    placeButtons(activeIndex, false);
+                    placeButtons(menuItemsEn, activeIndex, false);
                 }
             });
+        }
+
+        // ============== Desktop Logic for Chinese ==============
+        function initChinese() {
+            if (window.innerWidth <= 768) return;
+
+            const floatingZh  = document.getElementById('floating-menu-zh');
+            const menuItemsZh = Array.from(floatingZh.querySelectorAll('a'));
+            const sectionsZh  = menuItemsZh.map(
+                btn => document.getElementById('content-zh-' + btn.dataset.index)
+            );
+
+            let activeIndex = 0;
+            sectionsZh.forEach((sec, i) => {
+                if (i === 0) {
+                    sec.style.transform = 'translateY(0)';
+                    sec.style.opacity   = '1';
+                } else {
+                    sec.style.transform = 'translateY(100%)';
+                    sec.style.opacity   = '0';
+                }
+            });
+
+            menuItemsZh.forEach(btn => btn.style.opacity = '0');
+            placeButtons(menuItemsZh, activeIndex, false);
+
+            setTimeout(() => {
+                menuItemsZh.forEach((btn, idx) => {
+                    setTimeout(() => {
+                        btn.style.opacity = '1';
+                    }, idx * 200);
+                });
+            }, 600);
+
+            // Click handlers
+            menuItemsZh.forEach((btn, i) => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (i === activeIndex) return;
+                    sectionsZh[activeIndex].style.transform = 'translateY(100%)';
+                    sectionsZh[activeIndex].style.opacity   = '0';
+                    sectionsZh[i].style.transform = 'translateY(0)';
+                    sectionsZh[i].style.opacity   = '1';
+
+                    activeIndex = i;
+                    placeButtons(menuItemsZh, activeIndex, true);
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    placeButtons(menuItemsZh, activeIndex, false);
+                }
+            });
+        }
+
+        // ============== placeButtons (shared) ==============
+        function placeButtons(menuItems, activeIdx, animate) {
+            const centerY = window.innerHeight / 2;
+            const halfActive = 25;
+            const scaleActive = 1.0;
+            const scaleInactive = 0.7;
+
+            const spacingFromActive = 80;
+            const spacingUnselected = 50;
+
+            if (!animate) {
+                menuItems.forEach(btn => {
+                    btn.style.transition = 'none';
+                });
+            }
+
+            // Place active in center
+            const activeY = centerY - halfActive;
+            menuItems[activeIdx].style.transform =
+                `translateY(${activeY}px) scale(${scaleActive})`;
+
+            // Below the active
+            let belowPos = activeY;
+            for (let j = activeIdx + 1; j < menuItems.length; j++) {
+                const dist = (j === activeIdx + 1)
+                    ? spacingFromActive
+                    : spacingUnselected;
+                belowPos += dist;
+                menuItems[j].style.transform =
+                    `translateY(${belowPos}px) scale(${scaleInactive})`;
+            }
+
+            // Above the active
+            let abovePos = activeY;
+            for (let j = activeIdx - 1; j >= 0; j--) {
+                const dist = (j === activeIdx - 1)
+                    ? spacingFromActive
+                    : spacingUnselected;
+                abovePos -= dist;
+                menuItems[j].style.transform =
+                    `translateY(${abovePos}px) scale(${scaleInactive})`;
+            }
+
+            if (!animate) {
+                requestAnimationFrame(() => {
+                    menuItems.forEach(btn => {
+                        btn.style.transition = '';
+                    });
+                });
+            }
         }
     });
 </script>
