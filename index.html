@@ -14,7 +14,6 @@
             font-size: 24px;
             background: white;
             transition: opacity 1s ease-in-out;
-            margin: 0;
         }
         .fade-out {
             opacity: 0;
@@ -28,12 +27,10 @@
     window.onload = function() {
         setTimeout(() => {
             document.body.classList.add("fade-out");
-
             setTimeout(() => {
-                // Redirect to CV page without changing URL
-                window.location.replace('cv.html');
-            }, 1000); // Wait for fade-out animation to complete
-        }, 1000);
+                window.location.href = "cv.html"; // Change this to your actual CV page
+            }, 1000); // Matches the transition duration
+        }, 1000); // Delay before fade starts
     };
 </script>
 </body>
