@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Welcome</title>
     <style>
         * {
@@ -17,8 +17,30 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: background 1s ease-in-out;
             background: white;
+        }
+
+        /*
+          We'll apply transitions with these classes.
+          We'll remove them briefly using JS to ensure
+          the initial state is never shown in a half-animated state.
+        */
+        .enable-transitions .welcome,
+        .enable-transitions .main-content,
+        .enable-transitions .floating-menu {
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+        }
+
+        .enable-transitions .welcome {
+            transition: transform 1s ease-in-out;
+        }
+
+        /*
+          Individual transitions for menu items fading in
+          (the scale hover transition remains).
+        */
+        .enable-transitions .floating-menu a {
+            transition: background 0.3s, transform 0.2s, opacity 0.5s ease-in-out;
         }
 
         /* Initial Welcome Animation */
@@ -31,7 +53,7 @@
             align-items: center;
             font-size: 3rem;
             background: white;
-            transition: transform 1s ease-in-out;
+            transform: translateY(0);
         }
 
         /* Main Content */
@@ -43,7 +65,6 @@
             height: 100vh;
             width: 100%;
             transform: translateY(100vh);
-            transition: transform 1s ease-in-out;
         }
 
         /* Hero Section */
@@ -68,12 +89,11 @@
             position: absolute;
             left: 20px;
             top: 50%;
-            transform: translateY(100vh) translateY(-50%);
             display: flex;
             flex-direction: column;
             gap: 10px;
+            transform: translateY(100vh) translateY(-50%);
             opacity: 0;
-            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
         }
 
         .floating-menu a {
@@ -87,7 +107,6 @@
             border-radius: 25px;
             text-decoration: none;
             font-size: 1rem;
-            transition: background 0.3s, transform 0.2s, opacity 0.5s ease-in-out;
             opacity: 0;
         }
 
@@ -119,30 +138,52 @@
 </div>
 
 <script>
-    window.onload = function() {
-        // Ensure elements are in their initial state
-        document.querySelector(".welcome").style.transform = "translateY(0)";
-        document.querySelector(".main-content").style.transform = "translateY(100vh)";
-        document.querySelector(".floating-menu").style.transform = "translateY(100vh) translateY(-50%)";
-        document.querySelector(".floating-menu").style.opacity = "0";
-        document.querySelectorAll(".floating-menu a").forEach((btn) => {
-            btn.style.opacity = "0";
+    document.addEventListener('DOMContentLoaded', () => {
+        const body         = document.body;
+        const welcome      = document.querySelector('.welcome');
+        const mainContent  = document.querySelector('.main-content');
+        const floatingMenu = document.querySelector('.floating-menu');
+        const menuItems    = document.querySelectorAll('.floating-menu a');
+
+        // 1) DISABLE TRANSITIONS & SET INITIAL STATES
+        welcome.style.transform      = 'translateY(0)';
+        mainContent.style.transform  = 'translateY(100vh)';
+        floatingMenu.style.transform = 'translateY(100vh) translateY(-50%)';
+        floatingMenu.style.opacity   = '0';
+
+        menuItems.forEach((btn) => {
+            btn.style.opacity = '0';
         });
 
-        // Start the animation sequence after a delay
-        setTimeout(() => {
-            document.querySelector(".welcome").style.transform = "translateY(-100%)";
-            document.querySelector(".main-content").style.transform = "translateY(0)";
-            document.querySelector(".floating-menu").style.transform = "translateY(-50%)";
-            document.querySelector(".floating-menu").style.opacity = "1";
+        // 2) WAIT A FRAME, THEN ENABLE TRANSITIONS & ANIMATE
+        // Also add a longer delay to keep Hello World for a bit.
 
-            document.querySelectorAll(".floating-menu a").forEach((btn, index) => {
-                setTimeout(() => {
-                    btn.style.opacity = "1";
-                }, index * 200);
-            });
-        }, 100);
-    };
+        requestAnimationFrame(() => {
+            // Keep the welcome screen on display for 2 seconds
+            setTimeout(() => {
+                // Enable the transitions
+                body.classList.add('enable-transitions');
+
+                // Start the desired animations
+                welcome.style.transform      = 'translateY(-100%)';
+                mainContent.style.transform  = 'translateY(0)';
+                floatingMenu.style.transform = 'translateY(-50%)';
+                floatingMenu.style.opacity   = '1';
+
+                // Fade in each button in order
+                menuItems.forEach((btn, index) => {
+                    setTimeout(() => {
+                        btn.style.opacity = '1';
+                    }, index * 200);
+                });
+            }, 1000); // 2-second delay
+        });
+    });
+
+    // Extra measure: disable scroll restoration if needed
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
 </script>
 
 </body>
