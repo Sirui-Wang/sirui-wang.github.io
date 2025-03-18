@@ -12,8 +12,8 @@
         }
         body {
             font-family: Arial, sans-serif;
-            height: 100vh;
-            overflow: hidden;
+            height: 100vh; /* Used on desktop; overridden on mobile via media query */
+            overflow: hidden; /* Desktop: we do fancy animations with no scrolling */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -47,8 +47,8 @@
         .app-container {
             position: relative;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
+            height: 100%; /* Desktop: we keep content inside */
+            overflow: hidden; /* We want to animate via JS on desktop */
         }
 
         /* Content Sections (Profile, CV, Projects, etc.) */
@@ -79,10 +79,10 @@
             position: absolute;
             left: 20px;
             width: 150px;
-            z-index: 9999; /* Keep menu above the content */
+            z-index: 9999; /* Keep menu above the content on desktop */
         }
         .floating-menu a {
-            position: absolute;
+            position: absolute; /* We'll move them in JS */
             left: 0;
             width: 150px;
             height: 50px;
@@ -96,11 +96,65 @@
             font-size: 1rem;
             opacity: 0; /* Hidden until welcome is gone */
             cursor: pointer;
-            transform-origin: center; /* So scale shrinks/expands from center */
+            transform-origin: center;
         }
         .floating-menu a:hover {
             background: #2a799f;
             transform: scale(1.05); /* slightly bigger on hover */
+        }
+
+
+        /*
+           =====================================================
+           MOBILE MODE (max-width: 768px):
+           - Hide the floating menu.
+           - Each content section is a full scroll-snap “page”.
+           - This way, we get “snap to page” feel,
+             but if content is longer than 100vh, user can scroll
+             within that section before snapping to the next.
+           =====================================================
+        */
+        @media (max-width: 768px) {
+
+            /* Let the entire page be scrollable, snapping between sections. */
+            body {
+                overflow: hidden; /* We'll nest the scroll in the container. */
+                height: 100vh;
+                display: block;   /* Not centered as on desktop */
+            }
+
+            /* The .app-container is now our scroll container. */
+            .app-container {
+                position: static;
+                width: 100%;
+                height: 100vh;
+                overflow-y: scroll; /* Vertical scrolling for the whole container */
+                scroll-snap-type: y mandatory; /* Each section snaps vertically */
+                scroll-snap-stop: always;      /* Force a snap even on fast scrolls */
+            }
+
+            /* Hide the floating menu entirely on mobile */
+            .floating-menu {
+                display: none !important;
+            }
+
+            /* Content sections in a vertical stack:
+               each is at least 100vh, snapping at the start. */
+            .content-section {
+                position: static !important; /* so they stack */
+                width: 100%;
+                min-height: 100vh;  /* each section is at least one screen high */
+                transform: none !important;
+                opacity: 1 !important;
+                scroll-snap-align: start; /* snap each section at top */
+            }
+
+            /* Optional spacing between sections if you want a gap:
+               (If you prefer no gap, remove margin-bottom)
+            */
+            .content-section:not(:last-child) {
+                margin-bottom: 0px;
+            }
         }
     </style>
 </head>
@@ -109,7 +163,6 @@
 <!-- Welcome Screen -->
 <div class="welcome">Hello, World!</div>
 
-<!-- Container for menu + content sections -->
 <div class="app-container">
 
     <!-- Floating Menu -->
@@ -150,150 +203,145 @@
         <p>Contact info here...</p>
     </div>
 
-</div><!-- end app-container -->
+</div> <!-- end .app-container -->
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const body         = document.body;
-        const welcome      = document.querySelector('.welcome');
-        const floatingMenu = document.querySelector('.floating-menu');
-        const menuItems    = Array.from(floatingMenu.querySelectorAll('a'));
-        const contentSecs  = menuItems.map(
-            (btn) => document.getElementById('content-' + btn.dataset.index)
-        );
+        // === Desktop Mode Only ===
+        if (window.innerWidth > 768) {
+            const body         = document.body;
+            const welcome      = document.querySelector('.welcome');
+            const floatingMenu = document.querySelector('.floating-menu');
+            const menuItems    = Array.from(floatingMenu.querySelectorAll('a'));
+            const contentSecs  = menuItems.map(
+                (btn) => document.getElementById('content-' + btn.dataset.index)
+            );
 
-        // We want the first section (index 0) active
-        let activeIndex = 0;
-        contentSecs.forEach((sec, i) => {
-            if (i === activeIndex) {
-                sec.style.transform = 'translateY(0)';
-                sec.style.opacity   = '1';
-            } else {
-                sec.style.transform = 'translateY(100%)';
-                sec.style.opacity   = '0';
-            }
-        });
-
-        // All menu items start invisible
-        menuItems.forEach((btn) => {
-            btn.style.opacity = '0';
-        });
-
-        // Place them for the initial load (no transitions yet)
-        placeButtons(activeIndex, false);
-
-        // === WELCOME SCREEN ANIMATION ===
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                // Enable transitions
-                body.classList.add('enable-transitions');
-
-                // Slide + fade out welcome
-                welcome.style.transform = 'translateY(-100%)';
-                welcome.style.opacity   = '0';
-
-                // Fade in the buttons, staggered
-                menuItems.forEach((btn, index) => {
-                    setTimeout(() => {
-                        btn.style.opacity = '1';
-                    }, index * 200);
-                });
-            }, 1000); // 1 second
-        });
-
-        // === CLICK HANDLERS ===
-        menuItems.forEach((btn, i) => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (i === activeIndex) return; // no change
-
-                // Slide out old content
-                contentSecs[activeIndex].style.transform = 'translateY(100%)';
-                contentSecs[activeIndex].style.opacity   = '0';
-
-                // Slide in new content
-                contentSecs[i].style.transform = 'translateY(0)';
-                contentSecs[i].style.opacity   = '1';
-
-                // Re-position the buttons so new one is centered
-                activeIndex = i;
-                placeButtons(activeIndex, true);
+            // We want the first section (index 0) active
+            let activeIndex = 0;
+            contentSecs.forEach((sec, i) => {
+                if (i === activeIndex) {
+                    sec.style.transform = 'translateY(0)';
+                    sec.style.opacity   = '1';
+                } else {
+                    sec.style.transform = 'translateY(100%)';
+                    sec.style.opacity   = '0';
+                }
             });
-        });
 
-        /*
-          placeButtons:
-          1) Active button => scale 1, centered.
-          2) Adjacent above/below => bigger spacing from active.
-          3) Non-adjacent unselected => smaller spacing from each other.
-          4) All unselected => scale 0.7
-        */
-        function placeButtons(activeIdx, animate) {
-            const centerY = window.innerHeight / 2;
-            const halfActive = 25;   // active button is ~50px tall => half is 25
-            const scaleActive = 1.0;
-            const scaleInactive = 0.7;
+            // All menu items start invisible
+            menuItems.forEach((btn) => {
+                btn.style.opacity = '0';
+            });
 
-            // We'll define two different spacing steps:
-            const spacingFromActive = 80; // bigger gap next to the active
-            const spacingUnselected = 50; // smaller gap between unselecteds
-
-            // If we don't want to animate now, disable transitions
-            if (!animate) {
-                menuItems.forEach(btn => {
-                    btn.style.transition = 'none';
-                });
-            }
-
-            // Place the active button
-            const activeY = centerY - halfActive;
-            menuItems[activeIdx].style.transform =
-                `translateY(${activeY}px) scale(${scaleActive})`;
-
-            // ========== PLACE BUTTONS BELOW ==========
-            let belowPos = activeY;
-            for (let j = activeIdx + 1; j < menuItems.length; j++) {
-                // The first button below the active gets bigger spacing,
-                // subsequent unselected pairs get the smaller spacing.
-                const dist = (j === activeIdx + 1)
-                    ? spacingFromActive
-                    : spacingUnselected;
-
-                belowPos += dist;
-
-                menuItems[j].style.transform =
-                    `translateY(${belowPos}px) scale(${scaleInactive})`;
-            }
-
-            // ========== PLACE BUTTONS ABOVE ==========
-            let abovePos = activeY;
-            for (let j = activeIdx - 1; j >= 0; j--) {
-                // The first button above the active also uses bigger spacing,
-                // subsequent unselected pairs get smaller spacing.
-                const dist = (j === activeIdx - 1)
-                    ? spacingFromActive
-                    : spacingUnselected;
-
-                abovePos -= dist;
-
-                menuItems[j].style.transform =
-                    `translateY(${abovePos}px) scale(${scaleInactive})`;
-            }
-
-            // Re-enable transitions if we turned them off
-            if (!animate) {
-                requestAnimationFrame(() => {
-                    menuItems.forEach(btn => {
-                        btn.style.transition = '';
-                    });
-                });
-            }
-        }
-
-        // Re-center on window resize
-        window.addEventListener('resize', () => {
+            // Place them initially (no transitions)
             placeButtons(activeIndex, false);
-        });
+
+            // === WELCOME SCREEN ANIMATION ===
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    // Enable transitions
+                    body.classList.add('enable-transitions');
+
+                    // Slide + fade out welcome
+                    welcome.style.transform = 'translateY(-100%)';
+                    welcome.style.opacity   = '0';
+
+                    // Fade in the buttons, staggered
+                    menuItems.forEach((btn, index) => {
+                        setTimeout(() => {
+                            btn.style.opacity = '1';
+                        }, index * 200);
+                    });
+                }, 1000); // keep Hello World for 1s
+            });
+
+            // === CLICK HANDLERS ===
+            menuItems.forEach((btn, i) => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (i === activeIndex) return; // no change
+
+                    // Slide out old content
+                    contentSecs[activeIndex].style.transform = 'translateY(100%)';
+                    contentSecs[activeIndex].style.opacity   = '0';
+
+                    // Slide in new content
+                    contentSecs[i].style.transform = 'translateY(0)';
+                    contentSecs[i].style.opacity   = '1';
+
+                    // Re-position the buttons so new one is centered
+                    activeIndex = i;
+                    placeButtons(activeIndex, true);
+                });
+            });
+
+            /*
+              placeButtons:
+              1) Active button => scale(1.0).
+              2) Unselected => scale(0.7).
+              3) Large gap around active => 80
+              4) Smaller gap between unselected => 50
+            */
+            function placeButtons(activeIdx, animate) {
+                const centerY = window.innerHeight / 2;
+                const halfActive = 25;   // half of 50
+                const scaleActive = 1.0;
+                const scaleInactive = 0.7;
+
+                const spacingFromActive = 80; // bigger gap next to active
+                const spacingUnselected = 50; // smaller gap between unselected
+
+                if (!animate) {
+                    menuItems.forEach(btn => {
+                        btn.style.transition = 'none';
+                    });
+                }
+
+                // Place active in center
+                const activeY = centerY - halfActive;
+                menuItems[activeIdx].style.transform =
+                    `translateY(${activeY}px) scale(${scaleActive})`;
+
+                // Below the active
+                let belowPos = activeY;
+                for (let j = activeIdx + 1; j < menuItems.length; j++) {
+                    const dist = (j === activeIdx + 1)
+                        ? spacingFromActive
+                        : spacingUnselected;
+                    belowPos += dist;
+                    menuItems[j].style.transform =
+                        `translateY(${belowPos}px) scale(${scaleInactive})`;
+                }
+
+                // Above the active
+                let abovePos = activeY;
+                for (let j = activeIdx - 1; j >= 0; j--) {
+                    const dist = (j === activeIdx - 1)
+                        ? spacingFromActive
+                        : spacingUnselected;
+                    abovePos -= dist;
+                    menuItems[j].style.transform =
+                        `translateY(${abovePos}px) scale(${scaleInactive})`;
+                }
+
+                if (!animate) {
+                    requestAnimationFrame(() => {
+                        menuItems.forEach(btn => {
+                            btn.style.transition = '';
+                        });
+                    });
+                }
+            }
+
+            // Re-center on window resize
+            window.addEventListener('resize', () => {
+                // If user resizes bigger than 768 => re-layout
+                if (window.innerWidth > 768) {
+                    placeButtons(activeIndex, false);
+                }
+            });
+        }
     });
 </script>
 
