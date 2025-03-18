@@ -12,8 +12,8 @@
         }
         body {
             font-family: Arial, sans-serif;
-            height: 100vh; /* Used on desktop; overridden on mobile via media query */
-            overflow: hidden; /* Desktop: we do fancy animations with no scrolling */
+            height: 100vh; /* used on desktop, overridden on mobile */
+            overflow: hidden; /* on desktop. We'll allow scroll on mobile via media query. */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -47,8 +47,8 @@
         .app-container {
             position: relative;
             width: 100%;
-            height: 100%; /* Desktop: we keep content inside */
-            overflow: hidden; /* We want to animate via JS on desktop */
+            height: 100%;
+            overflow: hidden; /* For desktop, we animate slides with JS. */
         }
 
         /* Content Sections (Profile, CV, Projects, etc.) */
@@ -103,57 +103,34 @@
             transform: scale(1.05); /* slightly bigger on hover */
         }
 
-
-        /*
-           =====================================================
-           MOBILE MODE (max-width: 768px):
-           - Hide the floating menu.
-           - Each content section is a full scroll-snap “page”.
-           - This way, we get “snap to page” feel,
-             but if content is longer than 100vh, user can scroll
-             within that section before snapping to the next.
-           =====================================================
-        */
+        /* Mobile Mode (max-width: 768px): scroll-snap layout */
         @media (max-width: 768px) {
-
-            /* Let the entire page be scrollable, snapping between sections. */
             body {
-                overflow: hidden; /* We'll nest the scroll in the container. */
+                overflow: hidden; /* We'll let .app-container do the scrolling */
                 height: 100vh;
-                display: block;   /* Not centered as on desktop */
+                display: block;   /* remove the center alignment for stacked sections */
             }
-
-            /* The .app-container is now our scroll container. */
             .app-container {
                 position: static;
                 width: 100%;
                 height: 100vh;
-                overflow-y: scroll; /* Vertical scrolling for the whole container */
-                scroll-snap-type: y mandatory; /* Each section snaps vertically */
-                scroll-snap-stop: always;      /* Force a snap even on fast scrolls */
+                overflow-y: scroll; /* vertical scrolling container */
+                scroll-snap-type: y mandatory;
+                scroll-snap-stop: always;
             }
-
-            /* Hide the floating menu entirely on mobile */
             .floating-menu {
-                display: none !important;
+                display: none !important; /* hide menu on mobile */
             }
-
-            /* Content sections in a vertical stack:
-               each is at least 100vh, snapping at the start. */
             .content-section {
-                position: static !important; /* so they stack */
+                position: static !important; /* stack vertically */
                 width: 100%;
-                min-height: 100vh;  /* each section is at least one screen high */
+                min-height: 100vh;
                 transform: none !important;
                 opacity: 1 !important;
-                scroll-snap-align: start; /* snap each section at top */
+                scroll-snap-align: start;
             }
-
-            /* Optional spacing between sections if you want a gap:
-               (If you prefer no gap, remove margin-bottom)
-            */
             .content-section:not(:last-child) {
-                margin-bottom: 0px;
+                margin-bottom: 0; /* optional spacing between sections */
             }
         }
     </style>
@@ -163,6 +140,7 @@
 <!-- Welcome Screen -->
 <div class="welcome">Hello, World!</div>
 
+<!-- Container for menu + content sections -->
 <div class="app-container">
 
     <!-- Floating Menu -->
@@ -207,16 +185,29 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // === Desktop Mode Only ===
-        if (window.innerWidth > 768) {
-            const body         = document.body;
-            const welcome      = document.querySelector('.welcome');
-            const floatingMenu = document.querySelector('.floating-menu');
-            const menuItems    = Array.from(floatingMenu.querySelectorAll('a'));
-            const contentSecs  = menuItems.map(
-                (btn) => document.getElementById('content-' + btn.dataset.index)
-            );
+        const body         = document.body;
+        const welcome      = document.querySelector('.welcome');
+        const floatingMenu = document.querySelector('.floating-menu');
+        const menuItems    = Array.from(floatingMenu.querySelectorAll('a'));
+        const contentSecs  = menuItems.map(
+            (btn) => document.getElementById('content-' + btn.dataset.index)
+        );
 
+        //
+        // 1) Always fade out the welcome screen (desktop or mobile)
+        //
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                body.classList.add('enable-transitions');
+                welcome.style.transform = 'translateY(-100%)';
+                welcome.style.opacity   = '0';
+            }, 1000); // 1 second
+        });
+
+        //
+        // 2) If we’re on desktop, run the floating menu logic
+        //
+        if (window.innerWidth > 768) {
             // We want the first section (index 0) active
             let activeIndex = 0;
             contentSecs.forEach((sec, i) => {
@@ -237,26 +228,18 @@
             // Place them initially (no transitions)
             placeButtons(activeIndex, false);
 
-            // === WELCOME SCREEN ANIMATION ===
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    // Enable transitions
-                    body.classList.add('enable-transitions');
+            // Fade in the floating-menu buttons, staggered
+            // after the welcome is hidden (approx after 1s).
+            // We can add a slight offset to ensure the fade out is done.
+            setTimeout(() => {
+                menuItems.forEach((btn, index) => {
+                    setTimeout(() => {
+                        btn.style.opacity = '1';
+                    }, index * 200);
+                });
+            }, 1200); // start ~200ms after welcome starts fading
 
-                    // Slide + fade out welcome
-                    welcome.style.transform = 'translateY(-100%)';
-                    welcome.style.opacity   = '0';
-
-                    // Fade in the buttons, staggered
-                    menuItems.forEach((btn, index) => {
-                        setTimeout(() => {
-                            btn.style.opacity = '1';
-                        }, index * 200);
-                    });
-                }, 1000); // keep Hello World for 1s
-            });
-
-            // === CLICK HANDLERS ===
+            // CLICK HANDLERS
             menuItems.forEach((btn, i) => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -278,7 +261,7 @@
 
             /*
               placeButtons:
-              1) Active button => scale(1.0).
+              1) Active => scale(1.0).
               2) Unselected => scale(0.7).
               3) Large gap around active => 80
               4) Smaller gap between unselected => 50
