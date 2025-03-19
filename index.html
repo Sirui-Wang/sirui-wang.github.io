@@ -70,8 +70,7 @@
         /* Content Sections (Profile, CV, Projects, etc.) */
         .content-section {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
             display: flex;
@@ -157,6 +156,10 @@
             font-weight: bold;
         }
 
+
+
+
+
         /* Mobile Mode (max-width: 768px): scroll-snap layout. */
         @media (max-width: 768px) {
             body {
@@ -164,35 +167,29 @@
                 height: 100vh;
                 display: block;
             }
-            /* The scroll container. */
             .app-container {
-                position: static;                       /* let it flow normally */
+                position: static;
                 width: 100%;
-                height: 100vh;                          /* full viewport on mobile */
-                overflow-y: auto;                     /* enable vertical scrolling */
-                scroll-snap-type: y mandatory;          /* snap settings */
+                height: 100vh;
+                overflow-y: scroll; /* vertical scrolling container */
+                scroll-snap-type: y mandatory;
                 scroll-snap-stop: always;
-                display: block !important;              /* ensure it shows up */
+                display: none;  /* shown after swipe, same as desktop approach */
                 transform: none !important;
                 opacity: 1 !important;
             }
-
-
             .floating-menu {
                 display: none !important; /* hide menu on mobile */
             }
-
             .content-section {
-                position: relative !important;
+                position: static !important;
                 width: 100%;
-                min-height: 100vh;      /* grows to fit the entire CV content */
-                height: auto !important;
+                min-height: 100vh;
+                height: auto;
                 transform: none !important;
                 opacity: 1 !important;
-                scroll-snap-align: start;  /* snap at the start of each section */
-                /* You can remove scroll-snap-stop here if you like, or keep it on the container. */
+                scroll-snap-align: start;
             }
-
             .cv-section {
                 width: 90%;
                 margin: 20px auto;
@@ -230,7 +227,7 @@
         <div>
             <img src="./media/SiruiPosterPhoto.jpg" alt="Profile Picture" style="width: 300px; border-radius:20%;" />
             <h1>Sirui Wang</h1>
-            <p>PhD in Civil Engineering | Researcher in Pipeline Condition Monitoring</p>
+            <p>PhD in Civil Engineering | Researcher in Non-Intrusive Pipeline Monitoring and Assessment</p>
         </div>
     </div>
 
@@ -318,6 +315,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="content-section" id="content-en-2" style="background:#fffbea;">
         <h1>Academic Contribution</h1>
