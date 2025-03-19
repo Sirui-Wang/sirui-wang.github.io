@@ -157,48 +157,46 @@
             font-weight: bold;
         }
 
-        /* ============ Mobile Mode (max-width: 768px) ============ */
+        /* Mobile Mode (max-width: 768px): scroll-snap layout. */
         @media (max-width: 768px) {
-            /* Let body expand if content is long */
             body {
-                height: auto;            /* Remove forced 100vh */
-                overflow: auto;          /* Allow normal page scrolling */
+                overflow: hidden;
+                height: 100vh;
                 display: block;
             }
-
+            /* The scroll container. */
             .app-container {
-                position: static;
+                position: static;                       /* let it flow normally */
                 width: 100%;
-                /* Let this container grow if a single section is taller than 100vh */
-                min-height: 100vh;
-                overflow-y: auto;        /* Scroll within the container */
-                scroll-snap-type: y mandatory;
+                height: 100vh;                          /* full viewport on mobile */
+                overflow-y: auto;                     /* enable vertical scrolling */
+                scroll-snap-type: y mandatory;          /* snap settings */
                 scroll-snap-stop: always;
-                display: none;           /* Shown after swipe, same as desktop approach */
+                display: block !important;              /* ensure it shows up */
                 transform: none !important;
                 opacity: 1 !important;
             }
+
 
             .floating-menu {
                 display: none !important; /* hide menu on mobile */
             }
 
             .content-section {
-                position: relative !important;  /* No absolute positioning on mobile */
+                position: relative !important;
                 width: 100%;
-                min-height: 100vh;             /* Each section is at least one full screen */
+                min-height: 100vh;      /* grows to fit the entire CV content */
+                height: auto !important;
                 transform: none !important;
                 opacity: 1 !important;
-                scroll-snap-align: start;      /* Snap to the start of each section */
+                scroll-snap-align: start;  /* snap at the start of each section */
+                /* You can remove scroll-snap-stop here if you like, or keep it on the container. */
             }
 
             .cv-section {
                 width: 90%;
                 margin: 20px auto;
-            }
-
-            .cv-content {
-                grid-template-columns: 1fr !important;
+                padding-bottom: 20px;
             }
         }
     </style>
@@ -223,7 +221,7 @@
         <a data-index="0">About Me</a>
         <a data-index="1">Curriculum Vitae</a>
         <a data-index="2">Academic<br>Contribution</a>
-        <!-- <a data-index=\"3\">Publicat2ions</a> -->
+<!--        <a data-index="3">Publicat2ions</a>-->
         <a data-index="4">Contact</a>
     </div>
 
@@ -268,7 +266,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="cv-subsection">
                 <h2>Work Experience</h2>
                 <div class="cv-content">
@@ -286,7 +283,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="cv-subsection">
                 <h2>Work Experience</h2>
                 <div class="cv-content">
@@ -328,10 +324,10 @@
         <p>Show your projects here.</p>
     </div>
 
-    <!-- <div class=\"content-section\" id=\"content-en-3\" style=\"background:#ffeef0;\"> -->
-    <!--   <h1>Publications</h1> -->
-    <!--   <p>Show your publications here.</p> -->
-    <!-- </div> -->
+<!--    <div class="content-section" id="content-en-3" style="background:#ffeef0;">-->
+<!--        <h1>Publications</h1>-->
+<!--        <p>Show your publications here.</p>-->
+<!--    </div>-->
 
     <div class="content-section" id="content-en-4" style="background:#f0ffee;">
         <h1>Contact</h1>
@@ -346,7 +342,7 @@
         <a data-index="0">关于我</a>
         <a data-index="1">简历</a>
         <a data-index="2">学术贡献</a>
-        <!-- <a data-index=\"3\">出版物</a> -->
+<!--        <a data-index="3">出版物</a>-->
         <a data-index="4">联系</a>
     </div>
 
@@ -369,10 +365,10 @@
         <p>在这里展示您的项目…</p>
     </div>
 
-    <!-- <div class=\"content-section\" id=\"content-zh-3\" style=\"background:#ffe0e5;\"> -->
-    <!--   <h1>出版物</h1> -->
-    <!--   <p>在这里展示您的出版物…</p> -->
-    <!-- </div> -->
+<!--    <div class="content-section" id="content-zh-3" style="background:#ffe0e5;">-->
+<!--        <h1>出版物</h1>-->
+<!--        <p>在这里展示您的出版物…</p>-->
+<!--    </div>-->
 
     <div class="content-section" id="content-zh-4" style="background:#eafff0;">
         <h1>联系</h1>
@@ -403,8 +399,8 @@
         welcome.addEventListener('click', (e) => {
             const rect = welcome.getBoundingClientRect();
             const mid  = rect.top + rect.height / 2;
-            // Top half => 'down' => Chinese
-            // Bottom half => 'up' => English
+            // Now top half => 'down' => Chinese
+            // bottom half => 'up' => English
             if (e.clientY < mid) {
                 handleSwipe('down');
             } else {
@@ -452,7 +448,7 @@
 
                 // Show the ZH container
                 appZh.style.display = 'block';
-                // Treat it as if it's above the screen (translateY(-100%))
+                // We treat it as if it's above the screen (translateY(-100%)).
                 appZh.style.transform = 'translateY(-100%)';
                 requestAnimationFrame(() => {
                     setTimeout(() => {
