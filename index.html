@@ -70,7 +70,8 @@
         /* Content Sections (Profile, CV, Projects, etc.) */
         .content-section {
             position: absolute;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             display: flex;
@@ -119,6 +120,43 @@
             transform: scale(1.05);
         }
 
+        .cv-section {
+            width: 60%;
+            max-width: 1080px; /* Prevents it from being too wide on large screens */
+            margin: 0 auto; /* Ensures proper centering */
+            text-align: left;
+            background: transparent;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .cv-section h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cv-subsection {
+            margin-bottom: 30px;
+        }
+
+        .cv-subsection h2 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .cv-content {
+            display: grid !important;
+            grid-template-columns: 1fr 3fr !important;
+            gap: 20px;
+            padding: 10px 0;
+            align-items: start;
+        }
+
+        .cv-content .cv-time {
+            font-weight: bold;
+        }
+
         /* Mobile Mode (max-width: 768px): scroll-snap layout. */
         @media (max-width: 768px) {
             body {
@@ -148,6 +186,13 @@
                 opacity: 1 !important;
                 scroll-snap-align: start;
             }
+            .cv-section {
+                width: 90%;
+                margin: 20px auto;
+            }
+            .cv-content {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 </head>
@@ -168,36 +213,82 @@
 <div class="app-container" id="app-en">
     <!-- Floating Menu (English) -->
     <div class="floating-menu" id="floating-menu-en">
-        <a data-index="0">Profile</a>
+        <a data-index="0">About Me</a>
         <a data-index="1">Curriculum Vitae</a>
-        <a data-index="2">Projects</a>
-        <a data-index="3">Publications</a>
+        <a data-index="2">Academic<br>Contribution</a>
+<!--        <a data-index="3">Publicat2ions</a>-->
         <a data-index="4">Contact</a>
     </div>
 
     <!-- English Content Sections -->
     <div class="content-section profile-content" id="content-en-0">
         <div>
-            <img src="placeholder.jpg" alt="Profile Picture" style="width: 150px; border-radius:50%;" />
-            <h1>Your Name</h1>
-            <p>PhD in Civil Engineering | Researcher in Acoustic Sensing</p>
+            <img src="/media/SiruiPosterPhoto.jpg" alt="Profile Picture" style="width: 500px; border-radius:20%;" />
+            <h1>Sirui Wang</h1>
+            <p>PhD in Civil Engineering | Researcher in Non-Intrusive Pipeline Monitoring and Assessment</p>
         </div>
     </div>
 
     <div class="content-section" id="content-en-1" style="background:#f1f7ff;">
-        <h1>Curriculum Vitae</h1>
-        <p>Display your CV info here...</p>
+        <div class="cv-section">
+            <h1>Curriculum Vitae</h1>
+
+            <div class="cv-subsection">
+                <h2>Education</h2>
+                <div class="cv-content">
+                    <div class="cv-time">2018 - Present</div>
+                    <div>
+                        <strong>University of Canterbury</strong>
+                        <p>PhD in Civil Engineering, specializing in Non-Intrusive Pipeline Monitoring and Assessment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cv-subsection">
+                <h2>Work Experience</h2>
+                <div class="cv-content">
+                    <div class="cv-time">2022 - 2024</div>
+                    <div>
+                        <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
+                        <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
+                    </div>
+                </div>
+                <div class="cv-content">
+                    <div class="cv-time">2020 - 2022</div>
+                    <div>
+                        <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
+                        <p>Developed high-precision heat transfer models for LNG systems.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cv-subsection">
+                <h2>Skills</h2>
+                <div class="cv-content">
+                    <div class="cv-time">Technical Skills</div>
+                    <div>
+                        <p>Proficient in signal processing, pipeline condition assessment, and optimization models.</p>
+                    </div>
+                </div>
+                <div class="cv-content">
+                    <div class="cv-time">Programming</div>
+                    <div>
+                        <p>Python, MATLAB, LaTeX, JavaScript for data analysis and web development.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="content-section" id="content-en-2" style="background:#fffbea;">
-        <h1>Projects</h1>
+        <h1>Academic Contribution</h1>
         <p>Show your projects here.</p>
     </div>
 
-    <div class="content-section" id="content-en-3" style="background:#ffeef0;">
-        <h1>Publications</h1>
-        <p>Show your publications here.</p>
-    </div>
+<!--    <div class="content-section" id="content-en-3" style="background:#ffeef0;">-->
+<!--        <h1>Publications</h1>-->
+<!--        <p>Show your publications here.</p>-->
+<!--    </div>-->
 
     <div class="content-section" id="content-en-4" style="background:#f0ffee;">
         <h1>Contact</h1>
@@ -209,10 +300,10 @@
 <div class="app-container" id="app-zh">
     <!-- Floating Menu (Chinese) -->
     <div class="floating-menu" id="floating-menu-zh">
-        <a data-index="0">个人资料</a>
+        <a data-index="0">关于我</a>
         <a data-index="1">简历</a>
-        <a data-index="2">项目</a>
-        <a data-index="3">出版物</a>
+        <a data-index="2">学术贡献</a>
+<!--        <a data-index="3">出版物</a>-->
         <a data-index="4">联系</a>
     </div>
 
@@ -220,8 +311,8 @@
     <div class="content-section profile-content" id="content-zh-0">
         <div>
             <img src="placeholder.jpg" alt="Profile Picture" style="width: 150px; border-radius:50%;" />
-            <h1>您的名字</h1>
-            <p>土木工程博士 | 声学传感研究员</p>
+            <h1>王思锐</h1>
+            <p>土木工程博士 | 非侵入式管道监测研究员</p>
         </div>
     </div>
 
@@ -231,14 +322,14 @@
     </div>
 
     <div class="content-section" id="content-zh-2" style="background:#fffdea;">
-        <h1>项目</h1>
+        <h1>学术贡献</h1>
         <p>在这里展示您的项目…</p>
     </div>
 
-    <div class="content-section" id="content-zh-3" style="background:#ffe0e5;">
-        <h1>出版物</h1>
-        <p>在这里展示您的出版物…</p>
-    </div>
+<!--    <div class="content-section" id="content-zh-3" style="background:#ffe0e5;">-->
+<!--        <h1>出版物</h1>-->
+<!--        <p>在这里展示您的出版物…</p>-->
+<!--    </div>-->
 
     <div class="content-section" id="content-zh-4" style="background:#eafff0;">
         <h1>联系</h1>
