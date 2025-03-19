@@ -157,42 +157,49 @@
             font-weight: bold;
         }
 
-        /* Mobile Mode (max-width: 768px): scroll-snap layout. */
+        /* ============ Mobile Mode (max-width: 768px) ============ */
         @media (max-width: 768px) {
+            /* Let body expand if content is long */
             body {
-                overflow: hidden;
-                height: 100vh;
+                height: auto;            /* Remove forced 100vh */
+                overflow: auto;          /* Allow normal page scrolling */
                 display: block;
             }
+
             .app-container {
                 position: static;
                 width: 100%;
-                height: 100vh;
-                overflow-y: scroll; /* vertical scrolling container */
+                /* Let this container grow if a single section is taller than 100vh */
+                min-height: 100vh;
+                overflow-y: auto;        /* Scroll within the container */
                 scroll-snap-type: y mandatory;
                 scroll-snap-stop: always;
-                display: none;  /* shown after swipe, same as desktop approach */
+                display: none;           /* Shown after swipe, same as desktop approach */
                 transform: none !important;
                 opacity: 1 !important;
             }
+
             .floating-menu {
                 display: none !important; /* hide menu on mobile */
             }
+
             .content-section {
-                position: static !important;
+                position: relative !important;  /* No absolute positioning on mobile */
                 width: 100%;
-                min-height: 100vh;
+                min-height: 100vh;             /* Each section is at least one full screen */
                 transform: none !important;
                 opacity: 1 !important;
-                scroll-snap-align: start;
+                scroll-snap-align: start;      /* Snap to the start of each section */
             }
+
             .cv-section {
                 width: 90%;
                 margin: 20px auto;
             }
-            /*.cv-content {*/
-            /*    grid-template-columns: 1fr !important;*/
-            /*}*/
+
+            .cv-content {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 </head>
@@ -216,7 +223,7 @@
         <a data-index="0">About Me</a>
         <a data-index="1">Curriculum Vitae</a>
         <a data-index="2">Academic<br>Contribution</a>
-<!--        <a data-index="3">Publicat2ions</a>-->
+        <!-- <a data-index=\"3\">Publicat2ions</a> -->
         <a data-index="4">Contact</a>
     </div>
 
@@ -261,6 +268,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="cv-subsection">
                 <h2>Work Experience</h2>
                 <div class="cv-content">
@@ -278,6 +286,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="cv-subsection">
                 <h2>Work Experience</h2>
                 <div class="cv-content">
@@ -319,10 +328,10 @@
         <p>Show your projects here.</p>
     </div>
 
-<!--    <div class="content-section" id="content-en-3" style="background:#ffeef0;">-->
-<!--        <h1>Publications</h1>-->
-<!--        <p>Show your publications here.</p>-->
-<!--    </div>-->
+    <!-- <div class=\"content-section\" id=\"content-en-3\" style=\"background:#ffeef0;\"> -->
+    <!--   <h1>Publications</h1> -->
+    <!--   <p>Show your publications here.</p> -->
+    <!-- </div> -->
 
     <div class="content-section" id="content-en-4" style="background:#f0ffee;">
         <h1>Contact</h1>
@@ -337,7 +346,7 @@
         <a data-index="0">关于我</a>
         <a data-index="1">简历</a>
         <a data-index="2">学术贡献</a>
-<!--        <a data-index="3">出版物</a>-->
+        <!-- <a data-index=\"3\">出版物</a> -->
         <a data-index="4">联系</a>
     </div>
 
@@ -360,10 +369,10 @@
         <p>在这里展示您的项目…</p>
     </div>
 
-<!--    <div class="content-section" id="content-zh-3" style="background:#ffe0e5;">-->
-<!--        <h1>出版物</h1>-->
-<!--        <p>在这里展示您的出版物…</p>-->
-<!--    </div>-->
+    <!-- <div class=\"content-section\" id=\"content-zh-3\" style=\"background:#ffe0e5;\"> -->
+    <!--   <h1>出版物</h1> -->
+    <!--   <p>在这里展示您的出版物…</p> -->
+    <!-- </div> -->
 
     <div class="content-section" id="content-zh-4" style="background:#eafff0;">
         <h1>联系</h1>
@@ -394,8 +403,8 @@
         welcome.addEventListener('click', (e) => {
             const rect = welcome.getBoundingClientRect();
             const mid  = rect.top + rect.height / 2;
-            // Now top half => 'down' => Chinese
-            // bottom half => 'up' => English
+            // Top half => 'down' => Chinese
+            // Bottom half => 'up' => English
             if (e.clientY < mid) {
                 handleSwipe('down');
             } else {
@@ -443,7 +452,7 @@
 
                 // Show the ZH container
                 appZh.style.display = 'block';
-                // We treat it as if it's above the screen (translateY(-100%)).
+                // Treat it as if it's above the screen (translateY(-100%))
                 appZh.style.transform = 'translateY(-100%)';
                 requestAnimationFrame(() => {
                     setTimeout(() => {
