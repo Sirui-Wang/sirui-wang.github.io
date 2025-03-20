@@ -158,6 +158,28 @@
 
 
 
+        @media (min-width: 769px) {
+            .content-section {
+                position: absolute;
+                top: 0; left: 0;
+                width: 100%;
+                height: 100vh;   /* The full screen */
+                overflow-y: auto;
+                /* This container just needs to allow scrolling;
+                   no flex-centering here */
+                display: block;
+            }
+
+            .content-section .inner-wrapper {
+                /* Now use flex to center within the scrollable area */
+                min-height: 100vh;    /* So it fills at least the viewport height */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 40px 20px;  /* Some nice breathing room */
+            }
+        }
 
 
         /* Mobile Mode (max-width: 768px): scroll-snap layout. */
@@ -225,92 +247,96 @@
 
     <!-- English Content Sections -->
     <div class="content-section profile-content" id="content-en-0">
-        <div>
-            <img src="media/SiruiPosterPhoto.jpg" alt="Profile Picture" style="width: 300px; border-radius:20%;" />
-            <h1>Sirui Wang</h1>
-<!--            <p>PhD in Civil Engineering | Researcher in Non-Intrusive Pipeline Monitoring and Assessment</p>-->
+        <div class="inner-wrapper">
+            <div>
+                <img src="media/SiruiPosterPhoto.jpg" alt="Profile Picture" style="width: 300px; border-radius:20%;" />
+                <h1>Sirui Wang</h1>
+    <!--            <p>PhD in Civil Engineering | Researcher in Non-Intrusive Pipeline Monitoring and Assessment</p>-->
+            </div>
         </div>
     </div>
 
     <div class="content-section" id="content-en-1" style="background:#f1f7ff;">
-        <div class="cv-section">
-            <h1>Curriculum Vitae</h1>
+        <div class="inner-wrapper">
+            <div class="cv-section">
+                <h1>Curriculum Vitae</h1>
 
-            <div class="cv-subsection">
-                <h2>Education</h2>
-                <div class="cv-content">
-                    <div class="cv-time">2018 - Present</div>
-                    <div>
-                        <strong>University of Canterbury</strong>
-                        <p>PhD in Civil Engineering, specializing in Non-Intrusive Pipeline Monitoring and Assessment.</p>
+                <div class="cv-subsection">
+                    <h2>Education</h2>
+                    <div class="cv-content">
+                        <div class="cv-time">2018 - Present</div>
+                        <div>
+                            <strong>University of Canterbury</strong>
+                            <p>PhD in Civil Engineering, specializing in Non-Intrusive Pipeline Monitoring and Assessment.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="cv-subsection">
-                <h2>Work Experience</h2>
-                <div class="cv-content">
-                    <div class="cv-time">2022 - 2024</div>
-                    <div>
-                        <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
-                        <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
+                <div class="cv-subsection">
+                    <h2>Work Experience</h2>
+                    <div class="cv-content">
+                        <div class="cv-time">2022 - 2024</div>
+                        <div>
+                            <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
+                            <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
+                        </div>
+                    </div>
+                    <div class="cv-content">
+                        <div class="cv-time">2020 - 2022</div>
+                        <div>
+                            <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
+                            <p>Developed high-precision heat transfer models for LNG systems.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="cv-content">
-                    <div class="cv-time">2020 - 2022</div>
-                    <div>
-                        <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
-                        <p>Developed high-precision heat transfer models for LNG systems.</p>
+                <div class="cv-subsection">
+                    <h2>Work Experience</h2>
+                    <div class="cv-content">
+                        <div class="cv-time">2022 - 2024</div>
+                        <div>
+                            <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
+                            <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
+                        </div>
+                    </div>
+                    <div class="cv-content">
+                        <div class="cv-time">2020 - 2022</div>
+                        <div>
+                            <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
+                            <p>Developed high-precision heat transfer models for LNG systems.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="cv-subsection">
-                <h2>Work Experience</h2>
-                <div class="cv-content">
-                    <div class="cv-time">2022 - 2024</div>
-                    <div>
-                        <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
-                        <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
+                <div class="cv-subsection">
+                    <h2>Work Experience</h2>
+                    <div class="cv-content">
+                        <div class="cv-time">2022 - 2024</div>
+                        <div>
+                            <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
+                            <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
+                        </div>
+                    </div>
+                    <div class="cv-content">
+                        <div class="cv-time">2020 - 2022</div>
+                        <div>
+                            <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
+                            <p>Developed high-precision heat transfer models for LNG systems.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="cv-content">
-                    <div class="cv-time">2020 - 2022</div>
-                    <div>
-                        <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
-                        <p>Developed high-precision heat transfer models for LNG systems.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="cv-subsection">
-                <h2>Work Experience</h2>
-                <div class="cv-content">
-                    <div class="cv-time">2022 - 2024</div>
-                    <div>
-                        <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
-                        <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
-                    </div>
-                </div>
-                <div class="cv-content">
-                    <div class="cv-time">2020 - 2022</div>
-                    <div>
-                        <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
-                        <p>Developed high-precision heat transfer models for LNG systems.</p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="cv-subsection">
-                <h2>Skills</h2>
-                <div class="cv-content">
-                    <div class="cv-time">Technical Skills</div>
-                    <div>
-                        <p>Proficient in signal processing, pipeline condition assessment, and optimization models.</p>
+                <div class="cv-subsection">
+                    <h2>Skills</h2>
+                    <div class="cv-content">
+                        <div class="cv-time">Technical Skills</div>
+                        <div>
+                            <p>Proficient in signal processing, pipeline condition assessment, and optimization models.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="cv-content">
-                    <div class="cv-time">Programming</div>
-                    <div>
-                        <p>Python, MATLAB, LaTeX, JavaScript for data analysis and web development.</p>
+                    <div class="cv-content">
+                        <div class="cv-time">Programming</div>
+                        <div>
+                            <p>Python, MATLAB, LaTeX, JavaScript for data analysis and web development.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -319,8 +345,10 @@
 
 
     <div class="content-section" id="content-en-2" style="background:#fffbea;">
-        <h1>Academic Contribution</h1>
-        <p>Show your projects here.</p>
+        <div class="inner-wrapper">
+            <h1>Academic Contribution</h1>
+            <p>Show your projects here.</p>
+        </div>
     </div>
 
 <!--    <div class="content-section" id="content-en-3" style="background:#ffeef0;">-->
@@ -329,8 +357,10 @@
 <!--    </div>-->
 
     <div class="content-section" id="content-en-4" style="background:#f0ffee;">
-        <h1>Contact</h1>
-        <p>Contact info here...</p>
+        <div class="inner-wrapper">
+            <h1>Contact</h1>
+            <p>Contact info here...</p>
+        </div>
     </div>
 </div><!-- end #app-en -->
 
@@ -347,21 +377,27 @@
 
     <!-- Chinese Content Sections -->
     <div class="content-section profile-content" id="content-zh-0">
-        <div>
-            <img src="media/SiruiPosterPhoto.jpg" alt="Profile Picture" style="width: 300px; border-radius:20%;" />
-            <h1>王思锐</h1>
-<!--            <p>土木工程博士 | 非侵入式管道监测研究员</p>-->
+        <div class="inner-wrapper">
+            <div>
+                <img src="media/SiruiPosterPhoto.jpg" alt="Profile Picture" style="width: 300px; border-radius:20%;" />
+                <h1>王思锐</h1>
+    <!--            <p>土木工程博士 | 非侵入式管道监测研究员</p>-->
+            </div>
         </div>
     </div>
 
     <div class="content-section" id="content-zh-1" style="background:#e7f1ff;">
-        <h1>简历</h1>
-        <p>在这里展示您的简历信息…</p>
+        <div class="inner-wrapper">
+            <h1>简历</h1>
+            <p>在这里展示您的简历信息…</p>
+        </div>
     </div>
 
     <div class="content-section" id="content-zh-2" style="background:#fffdea;">
-        <h1>学术贡献</h1>
-        <p>在这里展示您的项目…</p>
+        <div class="inner-wrapper">
+            <h1>学术贡献</h1>
+            <p>在这里展示您的项目…</p>
+        </div>
     </div>
 
 <!--    <div class="content-section" id="content-zh-3" style="background:#ffe0e5;">-->
@@ -370,8 +406,10 @@
 <!--    </div>-->
 
     <div class="content-section" id="content-zh-4" style="background:#eafff0;">
-        <h1>联系</h1>
-        <p>在这里展示您的联系方式…</p>
+        <div class="inner-wrapper">
+            <h1>联系</h1>
+            <p>在这里展示您的联系方式…</p>
+        </div>
     </div>
 </div><!-- end #app-zh -->
 
