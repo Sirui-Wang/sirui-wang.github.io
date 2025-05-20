@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    overflow: hidden; /* On desktop. On mobile we override via media query. */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    position: relative;
+}
+
+.enable-transitions .welcome,
+.enable-transitions .app-container,
+.enable-transitions .content-section,
+.enable-transitions .floating-menu a {
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+}
+
+/* Welcome Screen */
+.welcome {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    background: white;
+    transform: translateY(0);
+    opacity: 1; /* Start fully visible */
+    z-index: 10; /* Above everything initially */
+    text-align: center;
+    user-select: none; /* so swipes don't select text */
+}
+.welcome p {
+    font-size: 1rem;
+    margin-top: 1rem;
+    color: #666;
+}
+
+/*
+  We now treat each app container (English / Chinese)
+  as absolutely positioned offscreen. We'll animate them in.
+*/
+.app-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Desktop sliding logic */
+    display: none;    /* hidden until user swipes */
+    transform: translateY(100%);
+    opacity: 0;
+    z-index: 9;       /* behind the welcome screen (z=10) initially */
+}
+
+/* Content Sections (Profile, CV, Projects, etc.) */
+.content-section {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(100%);
+    opacity: 0;
+}
+/*.content-section.active {*/
+/*    transform: translateY(0);*/
+/*    opacity: 1;*/
+/*}*/
+
+/* Example styling for the first (Profile) */
+.profile-content {
+    background: #f9f9f9;
+    text-align: center;
+}
+
+/* Floating Menu (buttons on the left) */
+.floating-menu {
+    position: absolute;
+    left: 20px;
+    width: 150px;
+    z-index: 9999; /* Keep menu above the content on desktop */
+}
+.floating-menu a {
+    position: absolute;
+    left: 0;
+    width: 150px;
+    height: 50px;
+    background: #1a5371;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1rem;
+    opacity: 0; /* Hidden until reveal */
+    cursor: pointer;
+    transform-origin: center;
+}
+.floating-menu a:hover {
+    background: #2a799f;
+    transform: scale(1.05);
+}
+
+.cv-section {
+    width: 60%;
+    max-width: 1080px; /* Prevents it from being too wide on large screens */
+    margin: 0 auto; /* Ensures proper centering */
+    text-align: left;
+    background: transparent;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.cv-section h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.cv-subsection {
+    margin-bottom: 30px;
+}
+
+.cv-subsection h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.cv-content {
+    display: grid !important;
+    grid-template-columns: 1fr 3fr !important;
+    gap: 20px;
+    padding: 10px 0;
+    align-items: start;
+}
+
+.cv-content .cv-time {
+    font-weight: bold;
+}
+
+
+
+@media (min-width: 769px) {
+    .content-section {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100vh;   /* The full screen */
+        overflow-y: auto;
+        /* This container just needs to allow scrolling;
+           no flex-centering here */
+        display: block;
+    }
+
+    .content-section .inner-wrapper {
+        /* Now use flex to center within the scrollable area */
+        min-height: 100vh;    /* So it fills at least the viewport height */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;  /* Some nice breathing room */
+    }
+}
+
+
+/* Mobile Mode (max-width: 768px): scroll-snap layout. */
+@media (max-width: 768px) {
+    body {
+        overflow: hidden;
+        height: 100vh;
+        display: block;
+    }
+    .app-container {
+        position: static;
+        width: 100%;
+        height: 100vh;
+        overflow-y: scroll; /* vertical scrolling container */
+        scroll-snap-type: y mandatory;
+        scroll-snap-stop: always;
+        display: none;  /* shown after swipe, same as desktop approach */
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    .floating-menu {
+        display: none !important; /* hide menu on mobile */
+    }
+    .content-section {
+        position: static !important;
+        width: 100%;
+        min-height: 100vh;
+        height: auto;
+        transform: none !important;
+        opacity: 1 !important;
+        scroll-snap-align: start;
+    }
+    .cv-section {
+        width: 90%;
+        margin: 20px auto;
+        padding-bottom: 20px;
+        margin-bottom: 15vh;
+    }
+}
