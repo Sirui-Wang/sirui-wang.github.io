@@ -3,14 +3,16 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     font-family: Arial, sans-serif;
     height: 100vh;
-    overflow: hidden; /* On desktop. On mobile we override via media query. */
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: white;
+    background: #f5f7fa;
+    color: #1f2d3d;
     position: relative;
 }
 
@@ -21,194 +23,286 @@ body {
     transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
 }
 
-/* Welcome Screen */
 .welcome {
     position: absolute;
-    top: 0; left: 0;
+    inset: 0;
     width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 3rem;
-    background: white;
+    background: linear-gradient(180deg, #ffffff 0%, #edf4fb 100%);
     transform: translateY(0);
-    opacity: 1; /* Start fully visible */
-    z-index: 10; /* Above everything initially */
+    opacity: 1;
+    z-index: 10;
     text-align: center;
-    user-select: none; /* so swipes don't select text */
+    user-select: none;
+    padding: 24px;
 }
+
 .welcome p {
     font-size: 1rem;
     margin-top: 1rem;
-    color: #666;
+    color: #536271;
 }
 
-/*
-  We now treat each app container (English / Chinese)
-  as absolutely positioned offscreen. We'll animate them in.
-*/
 .app-container {
     position: absolute;
-    top: 0; left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Desktop sliding logic */
-    display: none;    /* hidden until user swipes */
+    overflow: hidden;
+    display: none;
     transform: translateY(100%);
     opacity: 0;
-    z-index: 9;       /* behind the welcome screen (z=10) initially */
+    z-index: 9;
 }
 
-/* Content Sections (Profile, CV, Projects, etc.) */
 .content-section {
     position: absolute;
-    top: 0; left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     transform: translateY(100%);
     opacity: 0;
+    background: linear-gradient(180deg, #f5f7fa 0%, #ecf2f7 100%);
 }
-/*.content-section.active {*/
-/*    transform: translateY(0);*/
-/*    opacity: 1;*/
-/*}*/
 
-/* Example styling for the first (Profile) */
 .profile-content {
-    background: #f9f9f9;
-    text-align: center;
+    background: linear-gradient(180deg, #f7fbff 0%, #e8f0f7 100%);
 }
 
-/* Floating Menu (buttons on the left) */
 .floating-menu {
     position: absolute;
     left: 20px;
-    width: 150px;
-    z-index: 9999; /* Keep menu above the content on desktop */
+    width: 170px;
+    z-index: 9999;
 }
+
 .floating-menu a {
     position: absolute;
     left: 0;
-    width: 150px;
-    height: 50px;
-    background: #1a5371;
-    color: white;
+    width: 170px;
+    height: 52px;
+    background: #174867;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 25px;
+    border-radius: 26px;
     text-decoration: none;
-    font-size: 1rem;
-    opacity: 0; /* Hidden until reveal */
+    font-size: 0.98rem;
+    letter-spacing: 0.01em;
+    opacity: 0;
     cursor: pointer;
     transform-origin: center;
+    padding: 0 16px;
+    text-align: center;
 }
+
 .floating-menu a:hover {
-    background: #2a799f;
+    background: #23668f;
     transform: scale(1.05);
 }
 
-.cv-section {
-    width: 60%;
-    max-width: 1080px; /* Prevents it from being too wide on large screens */
-    margin: 0 auto; /* Ensures proper centering */
-    text-align: left;
-    background: transparent;
-    padding: 20px;
-    border-radius: 10px;
+.inner-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
 }
 
-.cv-section h1 {
+.profile-card,
+.cv-sheet,
+.letter-sheet {
+    width: min(960px, calc(100vw - 120px));
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(22, 46, 67, 0.12);
+}
+
+.profile-card {
     text-align: center;
-    margin-bottom: 20px;
+    padding: 48px 40px;
 }
 
-.cv-subsection {
-    margin-bottom: 30px;
+.profile-image {
+    width: 280px;
+    max-width: 100%;
+    border-radius: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 14px 32px rgba(23, 72, 103, 0.18);
 }
 
-.cv-subsection h2 {
-    border-bottom: 2px solid #333;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
+.profile-card h1 {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
 }
 
-.cv-content {
-    display: grid !important;
-    grid-template-columns: 1fr 3fr !important;
+.profile-role,
+.profile-location {
+    font-size: 1.05rem;
+    color: #4d6072;
+}
+
+.profile-location {
+    margin-top: 8px;
+    margin-bottom: 24px;
+}
+
+.profile-summary {
+    width: min(720px, 100%);
+    margin: 0 auto;
+    display: grid;
+    gap: 14px;
+    line-height: 1.7;
+    color: #24384b;
+}
+
+.cv-sheet,
+.letter-sheet {
+    padding: 40px 44px;
+}
+
+.cv-header {
+    text-align: center;
+    border-bottom: 2px solid #d9e2ea;
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+}
+
+.cv-header h1,
+.letter-sheet h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.cv-header p {
+    color: #5a6c7e;
+    margin-top: 4px;
+}
+
+.cv-block {
+    margin-bottom: 28px;
+}
+
+.cv-block h2 {
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d9e2ea;
+    color: #174867;
+}
+
+.cv-entry {
+    display: grid;
+    grid-template-columns: minmax(140px, 190px) minmax(0, 1fr);
     gap: 20px;
-    padding: 10px 0;
-    align-items: start;
+    padding: 12px 0;
 }
 
-.cv-content .cv-time {
+.cv-time {
     font-weight: bold;
+    color: #2c485f;
 }
 
+.cv-detail h3 {
+    font-size: 1.02rem;
+    margin-bottom: 6px;
+}
 
+.cv-subtitle {
+    color: #607386;
+    margin-bottom: 6px;
+}
+
+.cv-list {
+    padding-left: 20px;
+    line-height: 1.65;
+    color: #24384b;
+}
+
+.cv-list li + li {
+    margin-top: 6px;
+}
+
+.cv-block p,
+.letter-sheet p {
+    line-height: 1.7;
+    color: #24384b;
+}
+
+.letter-sheet p + p {
+    margin-top: 16px;
+}
 
 @media (min-width: 769px) {
     .content-section {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%;
-        height: 100vh;   /* The full screen */
+        height: 100vh;
         overflow-y: auto;
-        /* This container just needs to allow scrolling;
-           no flex-centering here */
         display: block;
-    }
-
-    .content-section .inner-wrapper {
-        /* Now use flex to center within the scrollable area */
-        min-height: 100vh;    /* So it fills at least the viewport height */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 40px 20px;  /* Some nice breathing room */
     }
 }
 
-
-/* Mobile Mode (max-width: 768px): scroll-snap layout. */
 @media (max-width: 768px) {
     body {
         overflow: hidden;
         height: 100vh;
         display: block;
     }
+
     .app-container {
         position: static;
         width: 100%;
         height: 100vh;
-        overflow-y: scroll; /* vertical scrolling container */
+        overflow-y: scroll;
         scroll-snap-type: y mandatory;
         scroll-snap-stop: always;
-        display: none;  /* shown after swipe, same as desktop approach */
+        display: none;
         transform: none !important;
         opacity: 1 !important;
     }
+
     .floating-menu {
-        display: none !important; /* hide menu on mobile */
+        display: none !important;
     }
+
     .content-section {
         position: static !important;
-        width: 100%;
         min-height: 100vh;
         height: auto;
         transform: none !important;
         opacity: 1 !important;
         scroll-snap-align: start;
+        padding: 24px 0;
     }
-    .cv-section {
-        width: 90%;
-        margin: 20px auto;
-        padding-bottom: 20px;
-        margin-bottom: 15vh;
+
+    .inner-wrapper {
+        min-height: auto;
+        padding: 24px 16px;
+    }
+
+    .profile-card,
+    .cv-sheet,
+    .letter-sheet {
+        width: 100%;
+        border-radius: 18px;
+        padding: 28px 22px;
+    }
+
+    .profile-card h1,
+    .cv-header h1,
+    .letter-sheet h1 {
+        font-size: 1.8rem;
+    }
+
+    .cv-entry {
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
 }

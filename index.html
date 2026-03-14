@@ -2,205 +2,427 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Open to Work | Sirui Wang (WIP)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sirui Wang | Profile, CV, Cover Letter</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-<!-- Welcome Screen -->
 <div class="welcome" id="welcome-screen">
     <div>
-        <!-- Chinese text at top half (click => down) -->
-        <p>披荆斩棘，直抵星辰<br>点此 或 请向下划</p>
+        <p>披荆斩棘，直抵星辰<br />点此 </p>
         <div>Per aspera ad astra</div>
-        <!-- English text at bottom half (click => up) -->
-        <p>Through asperities to the stars<br>Click here, or swipe up</p>
+        <p>Through asperities to the stars<br />Click here, or swipe up</p>
     </div>
 </div>
 
-<!-- English Container -->
 <div class="app-container" id="app-en">
-    <!-- Floating Menu (English) -->
     <div class="floating-menu" id="floating-menu-en">
-        <a data-index="0">About Me</a>
+        <a data-index="0">Profile</a>
         <a data-index="1">Curriculum Vitae</a>
-        <a data-index="2">Academic<br>Contribution</a>
-<!--        <a data-index="3">Publicat2ions</a>-->
-        <a data-index="4">Contact</a>
+        <a data-index="2">Cover Letter</a>
     </div>
 
-    <!-- English Content Sections -->
     <div class="content-section profile-content" id="content-en-0">
         <div class="inner-wrapper">
-            <div>
-                <img src="media/SiruiPosterPhoto.jpg" alt="Profile Picture" style="width: 300px; border-radius:20%;" />
+            <div class="profile-card">
+                <img src="media/SiruiPosterPhoto.jpg" alt="Portrait of Sirui Wang" class="profile-image" />
                 <h1>Sirui Wang</h1>
-                <p>PhD Candidate in Civil Engineering | Researcher in Non-Intrusive Pipeline Monitoring and Assessment</p>
-                <p>ORCID: 0009-0004-3740-0208</p>
+                <p class="profile-role">PhD Candidate in Civil and Environmental Engineering</p>
+                <p class="profile-location">Christchurch, New Zealand | Available to relocate</p>
+                <div class="profile-summary">
+                    <p>I work at the intersection of hydraulic modelling, infrastructure condition assessment, and practical water engineering.</p>
+                    <p>My research and field experience focus on understanding how real pipeline networks behave, how to interpret operational data, and how to turn technical evidence into better infrastructure decisions.</p>
+                    <p>I am seeking water engineering work where I can contribute to resilient, data-informed outcomes across drinking water, wastewater, and stormwater systems.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="content-section" id="content-en-1" style="background:#f1f7ff;">
+    <div class="content-section" id="content-en-1">
         <div class="inner-wrapper">
-            <div class="cv-section">
-                <h1>Curriculum Vitae</h1>
+            <article class="cv-sheet">
+                <header class="cv-header">
+                    <h1>Sirui Wang</h1>
+                    <p>Christchurch, NZ | Available to relocate | (021) 1088235</p>
+                    <p>sirui_wang@outlook.com | linkedin.com/in/sirui-w-3a6863138</p>
+                </header>
 
-                <div class="cv-subsection">
+                <section class="cv-block">
+                    <h2>Summary</h2>
+                    <p>PhD candidate in Civil and Environmental Engineering with a strong background in hydraulic modelling, water network analysis, and infrastructure condition assessment. Experienced in using modelling, field measurements, and data analysis to assess system performance and support evidence-based engineering decisions. Seeking a graduate water engineering role where these skills can contribute to resilient, data-informed solutions across drinking water, wastewater, and stormwater infrastructure.</p>
+                </section>
+
+                <section class="cv-block">
                     <h2>Education</h2>
-                    <div class="cv-content">
-                        <div class="cv-time">2018 - Present</div>
-                        <div>
-                            <strong>University of Canterbury</strong>
-                            <p>PhD in Civil Engineering, specializing in Non-Intrusive Pipeline Monitoring and Assessment.</p>
+                    <div class="cv-entry">
+                        <div class="cv-time">2022 - Present</div>
+                        <div class="cv-detail">
+                            <h3>University of Canterbury</h3>
+                            <p class="cv-subtitle">PhD Candidate in Civil Engineering</p>
+                            <p>Research includes network-scale hydraulic transient modelling, condition assessment field validation, and operational data analysis on water pipeline networks.</p>
                         </div>
                     </div>
-                </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">2018 - 2021</div>
+                        <div class="cv-detail">
+                            <h3>University of Canterbury</h3>
+                            <p class="cv-subtitle">Bachelor of Engineering (Honours) in Civil Engineering, GPA 7.88</p>
+                        </div>
+                    </div>
+                </section>
 
-                <div class="cv-subsection">
-                    <h2>Work Experience</h2>
-                    <div class="cv-content">
-                        <div class="cv-time">2022 - 2024</div>
-                        <div>
-                            <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
-                            <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
-                        </div>
-                    </div>
-                    <div class="cv-content">
-                        <div class="cv-time">2020 - 2022</div>
-                        <div>
-                            <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
-                            <p>Developed high-precision heat transfer models for LNG systems.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="cv-subsection">
-                    <h2>Work Experience</h2>
-                    <div class="cv-content">
-                        <div class="cv-time">2022 - 2024</div>
-                        <div>
-                            <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
-                            <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
-                        </div>
-                    </div>
-                    <div class="cv-content">
-                        <div class="cv-time">2020 - 2022</div>
-                        <div>
-                            <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
-                            <p>Developed high-precision heat transfer models for LNG systems.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="cv-subsection">
-                    <h2>Work Experience</h2>
-                    <div class="cv-content">
-                        <div class="cv-time">2022 - 2024</div>
-                        <div>
-                            <strong>Shenzhen 'Solar-Storage-Direct-Coupling' Project</strong>
-                            <p>Main researcher, optimizing PV system integration with building thermal loads.</p>
-                        </div>
-                    </div>
-                    <div class="cv-content">
-                        <div class="cv-time">2020 - 2022</div>
-                        <div>
-                            <strong>Industrial Application Research on Large LNG/FLNG Heat Exchanger</strong>
-                            <p>Developed high-precision heat transfer models for LNG systems.</p>
-                        </div>
-                    </div>
-                </div>
+                <section class="cv-block">
+                    <h2>Key Strengths</h2>
+                    <ul class="cv-list">
+                        <li>Hydraulic modelling and water network analysis</li>
+                        <li>Strong interest in resilient and sustainable water infrastructure</li>
+                        <li>Collaborative communicator with coordination and technical reporting experience</li>
+                        <li>Field-aware with a strong health and safety mindset</li>
+                        <li>Quick to learn new tools, methods, and ways of working</li>
+                        <li>Adaptable across multidisciplinary and field-based environments</li>
+                    </ul>
+                </section>
 
-                <div class="cv-subsection">
+                <section class="cv-block">
                     <h2>Skills</h2>
-                    <div class="cv-content">
-                        <div class="cv-time">Technical Skills</div>
-                        <div>
-                            <p>Proficient in signal processing, pipeline condition assessment, and optimization models.</p>
+                    <div class="cv-entry">
+                        <div class="cv-time">Hydraulic Modelling &amp; Network Analysis</div>
+                        <div class="cv-detail">
+                            <ul class="cv-list">
+                                <li>Hydraulic modelling for capacity, pressure, and demand-scenario assessment (for example EPANET)</li>
+                                <li>Renewal and upgrade support using condition evidence and hydraulic performance evaluation</li>
+                                <li>Network-level sensor planning for operational monitoring and decision support</li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="cv-content">
-                        <div class="cv-time">Programming</div>
-                        <div>
-                            <p>Python, MATLAB, LaTeX, JavaScript for data analysis and web development.</p>
+                    <div class="cv-entry">
+                        <div class="cv-time">Condition Assessment &amp; Monitoring</div>
+                        <div class="cv-detail">
+                            <ul class="cv-list">
+                                <li>Hydraulic transient diagnostics and interpretation for network behaviour and anomaly identification</li>
+                                <li>Familiar with DMA analytics, CCTV, acoustic logging, and transient-based inspection</li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-            </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">Data Analysis &amp; Tools</div>
+                        <div class="cv-detail">
+                            <ul class="cv-list">
+                                <li>Signal processing with Python and MATLAB</li>
+                                <li>Data visualisation with Python, MATLAB, and Excel</li>
+                                <li>GIS-based spatial risk mapping</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">Project Delivery &amp; Communication</div>
+                        <div class="cv-detail">
+                            <ul class="cv-list">
+                                <li>Technical reporting and oral presentation</li>
+                                <li>Planning, documentation, coordination, and field safety readiness</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-block">
+                    <h2>Relevant Experience</h2>
+                    <div class="cv-entry">
+                        <div class="cv-time">2022 - Present</div>
+                        <div class="cv-detail">
+                            <h3>PhD Candidate</h3>
+                            <ul class="cv-list">
+                                <li>Developed hydraulic transient models to investigate behaviour in operational water networks</li>
+                                <li>Analysed field data to identify unlogged network features and improve understanding of pipeline conditions</li>
+                                <li>Developed a network-level pressure sensor placement strategy for operational pipeline deterioration monitoring</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">2022 - 2025</div>
+                        <div class="cv-detail">
+                            <h3>Teaching Assistant Coordinator</h3>
+                            <ul class="cv-list">
+                                <li>Coordinated Teaching Assistant scheduling, role allocation, and responsibilities across course delivery periods</li>
+                                <li>Communicated with lecturers and laboratory technicians to plan and deliver laboratory sessions, ensuring smooth teaching operations</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">2020 - 2021</div>
+                        <div class="cv-detail">
+                            <h3>Final Year Design Project</h3>
+                            <ul class="cv-list">
+                                <li>Contributed to a water supply network planning and design project, covering demand assessment and system sizing for stakeholder requirements</li>
+                                <li>Evaluated peak-demand and fire-flow scenarios to assess network capacity and service performance</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">2019 - 2020</div>
+                        <div class="cv-detail">
+                            <h3>Traffic Controller</h3>
+                            <ul class="cv-list">
+                                <li>Worked in field-based environments to support safe traffic movement around active work sites, following health and safety procedures and coordinating with drivers, crews, and supervisors</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-block">
+                    <h2>Publication</h2>
+                    <p>Wang, S., Li, Z., &amp; Lee, P. (2025). Extended theoretical model for water pipeline passive assessment using ambient noise correlation. <em>Mechanical Systems and Signal Processing, 238</em>, 113223. https://doi.org/10.1016/j.ymssp.2025.113223</p>
+                </section>
+
+                <section class="cv-block">
+                    <h2>Additional Information</h2>
+                    <ul class="cv-list">
+                        <li>Bilingual: Mandarin (native), English (fluent)</li>
+                        <li>Holds a current New Zealand Post-Study Work Visa</li>
+                        <li>Holds a full New Zealand Class 1 driver licence, with experience driving large and manual transmission vehicles</li>
+                    </ul>
+                </section>
+
+                <section class="cv-block">
+                    <h2>Referees</h2>
+                    <div class="cv-entry">
+                        <div class="cv-time">Dr. Derek Li</div>
+                        <div class="cv-detail">
+                            <p>Senior supervisor</p>
+                            <p>Derek.Li@canterbury.ac.nz | 027 234 3594</p>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">Prof. Pedro Lee</div>
+                        <div class="cv-detail">
+                            <p>Co-supervisor</p>
+                            <p>Pedro.Lee@canterbury.ac.nz | 021 192 2688</p>
+                        </div>
+                    </div>
+                </section>
+            </article>
         </div>
     </div>
 
-
-    <div class="content-section" id="content-en-2" style="background:#fffbea;">
+    <div class="content-section" id="content-en-2">
         <div class="inner-wrapper">
-            <h1>Academic Contribution</h1>
-            <p>Show your projects here.</p>
+            <article class="letter-sheet">
+                <h1>Cover Letter</h1>
+                <p>Dear Hiring Manager,</p>
+                <p>I am a PhD candidate in Civil and Environmental Engineering at the University of Canterbury, and I am seeking an opportunity in water engineering where I can contribute practical modelling, field analysis, and infrastructure assessment capability.</p>
+                <p>My work has centred on understanding the behaviour of operational water pipeline networks through hydraulic transient modelling, field validation, and data interpretation. Alongside research, I have coordinated teaching support, worked in field-based environments, and developed a practical appreciation for communication, safety, and disciplined project delivery.</p>
+                <p>I am particularly interested in roles involving drinking water, wastewater, and stormwater systems, especially where resilient infrastructure, evidence-based decision making, and long-term asset performance matter. I would value the opportunity to contribute both technically and collaboratively within a team delivering water outcomes that are robust and useful in practice.</p>
+                <p>Thank you for your time and consideration.</p>
+                <p>Sincerely,<br />Sirui Wang</p>
+            </article>
         </div>
     </div>
+</div>
 
-<!--    <div class="content-section" id="content-en-3" style="background:#ffeef0;">-->
-<!--        <h1>Publications</h1>-->
-<!--        <p>Show your publications here.</p>-->
-<!--    </div>-->
-
-    <div class="content-section" id="content-en-4" style="background:#f0ffee;">
-        <div class="inner-wrapper">
-            <h1>Contact</h1>
-            <p>Contact info here...</p>
-        </div>
-    </div>
-</div><!-- end #app-en -->
-
-<!-- Chinese Container -->
 <div class="app-container" id="app-zh">
-    <!-- Floating Menu (Chinese) -->
     <div class="floating-menu" id="floating-menu-zh">
         <a data-index="0">关于我</a>
         <a data-index="1">简历</a>
-        <a data-index="2">学术贡献</a>
-<!--        <a data-index="3">出版物</a>-->
-        <a data-index="4">联系</a>
+        <a data-index="2">求职信</a>
     </div>
 
-    <!-- Chinese Content Sections -->
     <div class="content-section profile-content" id="content-zh-0">
         <div class="inner-wrapper">
-            <div>
-                <img src="media/SiruiPosterPhoto.jpg" alt="Profile Picture" style="width: 300px; border-radius:20%;" />
+            <div class="profile-card">
+                <img src="media/SiruiPosterPhoto.jpg" alt="王思锐照片" class="profile-image" />
                 <h1>王思锐</h1>
-                <p>土木工程博士候选人 | 非侵入式管道监测研究员</p>
-                <p>ORCID: 0009-0004-3740-0208</p>
+                <p class="profile-role">土木与环境工程博士候选人</p>
+                <p class="profile-location">新西兰基督城 | 可迁居</p>
+                <div class="profile-summary">
+                    <p>我的工作主要围绕水力建模、基础设施状态评估，以及面向实际工程场景的数据分析展开。</p>
+                    <p>我关注真实管网的运行行为、如何从监测与现场数据中识别问题，以及如何将技术证据转化为更可靠的工程判断。</p>
+                    <p>我希望在供水、污水或雨水工程相关岗位中，继续参与更加韧性、更加数据驱动的基础设施解决方案。</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="content-section" id="content-zh-1" style="background:#e7f1ff;">
+    <div class="content-section" id="content-zh-1">
         <div class="inner-wrapper">
-            <h1>简历</h1>
-            <p>在这里展示您的简历信息…</p>
+            <article class="cv-sheet">
+                <header class="cv-header">
+                    <h1>王思锐</h1>
+                    <p>新西兰基督城 | 可迁居 | (021) 1088235</p>
+                    <p>sirui_wang@outlook.com | linkedin.com/in/sirui-w-3a6863138</p>
+                </header>
+
+                <section class="cv-block">
+                    <h2>个人概述</h2>
+                    <p>土木与环境工程博士候选人，具备扎实的水力建模、供水管网分析和基础设施状态评估背景。擅长结合模型分析、现场测量和数据处理来评估系统性能，并以证据支持工程判断。希望进入水务工程相关岗位，将这些能力应用于供水、污水和雨水基础设施中更具韧性、更加数据驱动的解决方案。</p>
+                </section>
+
+                <section class="cv-block">
+                    <h2>教育背景</h2>
+                    <div class="cv-entry">
+                        <div class="cv-time">2022 - 至今</div>
+                        <div class="cv-detail">
+                            <h3>坎特伯雷大学</h3>
+                            <p class="cv-subtitle">土木工程博士候选人</p>
+                            <p>研究内容包括管网尺度的水力瞬变建模、状态评估现场验证，以及供水管网运行数据分析。</p>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">2018 - 2021</div>
+                        <div class="cv-detail">
+                            <h3>坎特伯雷大学</h3>
+                            <p class="cv-subtitle">土木工程荣誉学士，GPA 7.88</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-block">
+                    <h2>核心优势</h2>
+                    <ul class="cv-list">
+                        <li>水力建模与供水管网分析能力扎实</li>
+                        <li>关注韧性与可持续水基础设施</li>
+                        <li>具备良好的协作沟通、协调与技术汇报能力</li>
+                        <li>熟悉现场工作环境，具备较强的健康与安全意识</li>
+                        <li>学习新工具、新方法和新工作方式速度快</li>
+                        <li>能够适应跨学科及现场导向的工作环境</li>
+                    </ul>
+                </section>
+
+                <section class="cv-block">
+                    <h2>技能</h2>
+                    <div class="cv-entry">
+                        <div class="cv-time">水力建模与管网分析</div>
+                        <div class="cv-detail">
+                            <ul class="cv-list">
+                                <li>可开展管网能力、压力及不同需求情景下的水力建模分析，例如 EPANET</li>
+                                <li>能够结合状态证据与水力性能评估支持更新与改造决策</li>
+                                <li>具备面向运行监测和决策支持的传感器布设规划能力</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">状态评估与监测</div>
+                        <div class="cv-detail">
+                            <ul class="cv-list">
+                                <li>熟悉水力瞬变诊断与解释，可用于识别管网行为和异常特征</li>
+                                <li>了解 DMA 分析、CCTV、声学记录与基于瞬变的检测等多种状态评估方法</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">数据分析与工具</div>
+                        <div class="cv-detail">
+                            <ul class="cv-list">
+                                <li>信号处理：Python、MATLAB</li>
+                                <li>数据可视化：Python、MATLAB、Excel</li>
+                                <li>基于 GIS 的空间风险制图</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">项目执行与沟通</div>
+                        <div class="cv-detail">
+                            <ul class="cv-list">
+                                <li>技术报告撰写与口头汇报</li>
+                                <li>计划、文档、协调及现场安全准备</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-block">
+                    <h2>相关经历</h2>
+                    <div class="cv-entry">
+                        <div class="cv-time">2022 - 至今</div>
+                        <div class="cv-detail">
+                            <h3>博士研究</h3>
+                            <ul class="cv-list">
+                                <li>建立水力瞬变模型，研究实际运行供水管网中的动态行为</li>
+                                <li>分析现场数据，识别未记录的管网特征并提升对管道状态的理解</li>
+                                <li>制定面向运行期管道劣化监测的网络级压力传感器布设策略</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">2022 - 2025</div>
+                        <div class="cv-detail">
+                            <h3>助教协调员</h3>
+                            <ul class="cv-list">
+                                <li>负责课程周期内助教排班、角色分配与工作协调</li>
+                                <li>与授课教师及实验技术人员沟通安排实验课程，保障教学顺利开展</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">2020 - 2021</div>
+                        <div class="cv-detail">
+                            <h3>毕业设计项目</h3>
+                            <ul class="cv-list">
+                                <li>参与供水管网规划与设计项目，完成需求评估与系统规模设计</li>
+                                <li>评估高峰需水及消防工况，分析管网能力与服务性能</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">2019 - 2020</div>
+                        <div class="cv-detail">
+                            <h3>交通管制员</h3>
+                            <ul class="cv-list">
+                                <li>在现场工作环境中支持施工区域周边交通安全运行，遵守健康与安全程序，并与司机、施工人员及主管协调配合</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-block">
+                    <h2>发表成果</h2>
+                    <p>Wang, S., Li, Z., &amp; Lee, P. (2025). Extended theoretical model for water pipeline passive assessment using ambient noise correlation. <em>Mechanical Systems and Signal Processing, 238</em>, 113223. https://doi.org/10.1016/j.ymssp.2025.113223</p>
+                </section>
+
+                <section class="cv-block">
+                    <h2>补充信息</h2>
+                    <ul class="cv-list">
+                        <li>双语：中文母语，英语流利</li>
+                        <li>持有新西兰 Post-Study Work Visa</li>
+                        <li>持有新西兰 Class 1 全驾照，并有大型车辆和手动挡驾驶经验</li>
+                    </ul>
+                </section>
+
+                <section class="cv-block">
+                    <h2>推荐人</h2>
+                    <div class="cv-entry">
+                        <div class="cv-time">Dr. Derek Li</div>
+                        <div class="cv-detail">
+                            <p>博士导师</p>
+                            <p>Derek.Li@canterbury.ac.nz | 027 234 3594</p>
+                        </div>
+                    </div>
+                    <div class="cv-entry">
+                        <div class="cv-time">Prof. Pedro Lee</div>
+                        <div class="cv-detail">
+                            <p>联合导师</p>
+                            <p>Pedro.Lee@canterbury.ac.nz | 021 192 2688</p>
+                        </div>
+                    </div>
+                </section>
+            </article>
         </div>
     </div>
 
-    <div class="content-section" id="content-zh-2" style="background:#fffdea;">
+    <div class="content-section" id="content-zh-2">
         <div class="inner-wrapper">
-            <h1>学术贡献</h1>
-            <p>在这里展示您的项目…</p>
+            <article class="letter-sheet">
+                <h1>求职信</h1>
+                <p>尊敬的招聘负责人：</p>
+                <p>您好。我目前是坎特伯雷大学土木与环境工程博士候选人，希望寻找与水务工程相关的工作机会，并在其中继续发挥自己在建模分析、现场数据解释和基础设施状态评估方面的能力。</p>
+                <p>我的研究主要围绕实际运行供水管网的水力瞬变行为、现场验证以及运行数据分析展开。同时，我也有教学协调和现场工作经验，因此对沟通协作、安全要求和项目执行节奏有较强的实际理解。</p>
+                <p>我尤其希望参与与供水、污水和雨水系统相关的工程工作，关注基础设施韧性、证据支持的决策，以及资产长期运行表现。如果有机会加入相关团队，我希望在技术能力和团队协作两方面都作出稳定而实际的贡献。</p>
+                <p>感谢您的时间与考虑。</p>
+                <p>此致<br />敬礼<br />王思锐</p>
+            </article>
         </div>
     </div>
-
-<!--    <div class="content-section" id="content-zh-3" style="background:#ffe0e5;">-->
-<!--        <h1>出版物</h1>-->
-<!--        <p>在这里展示您的出版物…</p>-->
-<!--    </div>-->
-
-    <div class="content-section" id="content-zh-4" style="background:#eafff0;">
-        <div class="inner-wrapper">
-            <h1>联系</h1>
-            <p>在这里展示您的联系方式…</p>
-        </div>
-    </div>
-</div><!-- end #app-zh -->
+</div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
