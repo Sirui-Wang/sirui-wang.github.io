@@ -204,16 +204,13 @@ body {
     gap: 16px;
     line-height: 1.7;
     color: #24384b;
+    text-align: justify;
 }
 
 .profile-intro {
     margin: 0;
     font-size: 1rem;
     line-height: 1.8;
-}
-
-#content-en-0 .profile-intro {
-    text-align: justify;
 }
 
 .profile-tags {
@@ -273,6 +270,7 @@ body {
 .section-header p {
     line-height: 1.7;
     color: #5a6c7e;
+    text-align: justify;
 }
 
 .cv-header p {
@@ -330,9 +328,6 @@ body {
 .letter-sheet p {
     line-height: 1.7;
     color: #24384b;
-}
-
-#content-en-2 .letter-sheet p {
     text-align: justify;
 }
 
@@ -405,6 +400,7 @@ body {
     margin-top: 12px;
     line-height: 1.7;
     color: #516272;
+    text-align: justify;
     transition: max-height 0.45s ease, opacity 0.3s ease;
 }
 
