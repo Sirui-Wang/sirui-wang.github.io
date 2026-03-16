@@ -29,6 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGallery("en", galleryImageList);
     renderGallery("zh", galleryImageList);
 
+    Array.from(document.querySelectorAll(".language-switch")).forEach((button) => {
+        button.addEventListener("click", () => {
+            switchLanguage(button.dataset.targetLang);
+        });
+    });
+
     function handleSwipe(forcedDirection = null) {
         const deltaY = touchEndY - touchStartY;
         const direction = forcedDirection || (deltaY < 0 ? "up" : "down");
@@ -90,6 +96,58 @@ document.addEventListener("DOMContentLoaded", () => {
             ...languageStates.get(lang),
             timelineReady: true
         });
+    }
+
+    function getVisibleLanguage() {
+        if (appEn.style.display === "block") {
+            return "en";
+        }
+
+        if (appZh.style.display === "block") {
+            return "zh";
+        }
+
+        return null;
+    }
+
+    function switchLanguage(targetLang) {
+        const currentLang = getVisibleLanguage();
+
+        if (!targetLang || targetLang === currentLang) {
+            return;
+        }
+
+        const sourceState = currentLang ? languageStates.get(currentLang) : null;
+        const targetState = languageStates.get(targetLang) || {};
+        const targetIndex = sourceState?.currentIndex ?? targetState.currentIndex ?? 0;
+
+        languageStates.set(targetLang, {
+            ...targetState,
+            currentIndex: targetIndex
+        });
+
+        appEn.style.display = targetLang === "en" ? "block" : "none";
+        appZh.style.display = targetLang === "zh" ? "block" : "none";
+        appEn.style.opacity = targetLang === "en" ? "1" : "0";
+        appZh.style.opacity = targetLang === "zh" ? "1" : "0";
+        appEn.style.transform = "translateY(0)";
+        appZh.style.transform = "translateY(0)";
+
+        initLanguage(targetLang);
+
+        const targetApp = document.getElementById(`app-${targetLang}`);
+        if (window.innerWidth <= DESKTOP_BREAKPOINT) {
+            const targetSection = document.getElementById(`content-${targetLang}-${targetIndex}`);
+            const stickyNav = document.getElementById(`sticky-nav-${targetLang}`);
+            const languageBar = document.getElementById(`language-bar-${targetLang}`);
+            const stickyOffset = (stickyNav?.offsetHeight || 0) + (languageBar?.offsetHeight || 0) + 12;
+
+            if (targetSection) {
+                const targetTop = Math.max(targetSection.offsetTop - stickyOffset, 0);
+                targetApp.scrollTo({ top: targetTop, behavior: "auto" });
+                window.scrollTo({ top: 0, behavior: "auto" });
+            }
+        }
     }
 
     function applyLanguageMode(lang, app, sections, force = false) {
@@ -240,6 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function initStackedNavigation(app, lang, sections) {
         const stickyNav = document.getElementById(`sticky-nav-${lang}`);
+        const languageBar = document.getElementById(`language-bar-${lang}`);
         if (!stickyNav) {
             return {
                 currentIndex: 0,
@@ -249,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const navItems = Array.from(stickyNav.querySelectorAll("a"));
-        const getStickyOffset = () => stickyNav.offsetHeight + 12;
+        const getStickyOffset = () => stickyNav.offsetHeight + (languageBar?.offsetHeight || 0) + 12;
         const getScrollRoot = () => (
             app.scrollHeight > app.clientHeight + 4
                 ? app
