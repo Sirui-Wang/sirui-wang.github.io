@@ -651,10 +651,11 @@ body {
     }
 
     .gallery-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
     }
 
     .gallery-card.is-landscape {
-        grid-column: span 1;
+        grid-column: span 2;
     }
 }
