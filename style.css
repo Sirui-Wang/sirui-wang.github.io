@@ -349,9 +349,12 @@ body {
     bottom: 8px;
     width: 2px;
     background: linear-gradient(180deg, #b7cad9 0%, #dce7ef 100%);
+    z-index: 0;
 }
 
 .timeline-item {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 84px minmax(0, 1fr);
     gap: 26px;
@@ -372,12 +375,15 @@ body {
     font-weight: bold;
     color: #2c485f;
     background: #f7fbff;
+    border: 1px solid #c7d7e4;
     border-radius: 999px;
     padding: 10px 12px;
-    box-shadow: 0 8px 20px rgba(23, 72, 103, 0.08);
+    box-shadow: 0 8px 20px rgba(23, 72, 103, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
 }
 
 .timeline-content {
+    position: relative;
+    z-index: 1;
     display: block;
     background: #f8fbfe;
     border: 1px solid #dce7ef;
