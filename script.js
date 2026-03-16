@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const DESKTOP_BREAKPOINT = 1100;
+    const WELCOME_TRANSITION_MS = 850;
     const body = document.body;
     const welcome = document.getElementById("welcome-screen");
     const appEn = document.getElementById("app-en");
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showSystem(lang) {
         body.classList.add("enable-transitions");
+        welcome.style.pointerEvents = "none";
 
         if (lang === "en") {
             welcome.style.transform = "translateY(-100%)";
@@ -48,6 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 50);
 
             initLanguage("en");
+            window.setTimeout(() => {
+                welcome.style.display = "none";
+            }, WELCOME_TRANSITION_MS);
             return;
         }
 
@@ -64,6 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         initLanguage("zh");
+        window.setTimeout(() => {
+            welcome.style.display = "none";
+        }, WELCOME_TRANSITION_MS);
     }
 
     function initLanguage(lang) {
