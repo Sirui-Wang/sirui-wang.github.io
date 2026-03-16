@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const DESKTOP_BREAKPOINT = 1100;
     const WELCOME_TRANSITION_MS = 850;
+    const SWIPE_THRESHOLD_PX = 24;
     const body = document.body;
     const welcome = document.getElementById("welcome-screen");
     const appEn = document.getElementById("app-en");
@@ -17,7 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     welcome.addEventListener("touchend", (event) => {
         touchEndY = event.changedTouches[0].clientY;
-        handleSwipe();
+        const deltaY = touchEndY - touchStartY;
+
+        if (Math.abs(deltaY) >= SWIPE_THRESHOLD_PX) {
+            handleSwipe(deltaY < 0 ? "up" : "down");
+            return;
+        }
+
+        const rect = welcome.getBoundingClientRect();
+        const midpoint = rect.top + rect.height / 2;
+        handleSwipe(touchEndY < midpoint ? "down" : "up");
     });
 
     welcome.addEventListener("click", (event) => {
