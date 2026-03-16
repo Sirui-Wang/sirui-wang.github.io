@@ -53,6 +53,10 @@ body {
     color: #8a5a3d;
 }
 
+.welcome-punchline {
+    color: #b85b24;
+}
+
 .app-container {
     position: absolute;
     inset: 0;
