@@ -255,6 +255,10 @@ body {
     color: #24384b;
 }
 
+#content-en-2 .letter-sheet p {
+    text-align: justify;
+}
+
 .letter-sheet p + p {
     margin-top: 16px;
 }

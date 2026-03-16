@@ -165,6 +165,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function initTimelines(lang) {
         const timelineItems = document.querySelectorAll(`#app-${lang} .timeline-item`);
 
+        if (timelineItems.length > 0) {
+            timelineItems[0].classList.add("is-open");
+        }
+
         timelineItems.forEach((item) => {
             item.addEventListener("click", () => {
                 const shouldOpen = !item.classList.contains("is-open");
